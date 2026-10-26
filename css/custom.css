@@ -1,0 +1,119 @@
+/* ============================================
+   水蓝 · 芙宁娜风 自定义皮肤
+   用法：放到 D:\blog\source\css\custom.css
+   换风格只改 :root 里的变量
+   ============================================ */
+
+:root {
+  --c-primary: #3d9bd1;        /* 主色：水蓝 */
+  --c-primary-light: #7fd0f0;  /* 浅色：高亮/悬停 */
+  --c-bg: #eef8ff;             /* 页面底色 */
+  --c-card: rgba(255, 255, 255, 0.72);  /* 卡片：半透明白 */
+  --c-text: #2b3a45;           /* 正文颜色 */
+  --radius: 18px;              /* 统一圆角 */
+}
+
+/* ---------- 1. 页面背景：淡蓝渐变 ---------- */
+body {
+  background: linear-gradient(160deg, #eaf6ff 0%, #f7fcff 45%, #eef4ff 100%) fixed;
+  color: var(--c-text);
+}
+
+/* ---------- 2. 顶部导航：毛玻璃 ---------- */
+#nav {
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 12px rgba(61, 155, 209, 0.08);
+}
+#nav a {
+  color: var(--c-primary) !important;
+  font-weight: 600;
+}
+
+/* ---------- 3. 文章卡片：玻璃拟态 ---------- */
+.recent-post-item,
+.card-widget {
+  background: var(--c-card) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius) !important;
+  box-shadow: 0 8px 24px rgba(61, 155, 209, 0.10);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.recent-post-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(61, 155, 209, 0.18);
+}
+
+/* ---------- 4. 标题：左侧水蓝竖条 ---------- */
+#article-container h1,
+#article-container h2,
+#article-container h3 {
+  padding-left: 12px;
+  border-left: 4px solid var(--c-primary);
+  border-radius: 2px;
+}
+
+/* ---------- 5. 链接：下划线滑入 ---------- */
+#article-container a {
+  color: var(--c-primary);
+  background-image: linear-gradient(var(--c-primary-light), var(--c-primary-light));
+  background-size: 0% 2px;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  transition: background-size 0.3s ease;
+}
+#article-container a:hover {
+  background-size: 100% 2px;
+}
+
+/* ---------- 6. 代码块：圆角 + 阴影 ---------- */
+figure.highlight,
+pre {
+  border-radius: 12px !important;
+  box-shadow: 0 6px 18px rgba(61, 155, 209, 0.12);
+  overflow: hidden;
+}
+
+/* ---------- 7. 图片：圆角 ---------- */
+#article-container img {
+  border-radius: 12px;
+}
+
+/* ---------- 8. 头像：水蓝光环 ---------- */
+.avatar-img img {
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(61, 155, 209, 0.35);
+}
+
+/* ---------- 9. 滚动条 ---------- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--c-primary), var(--c-primary-light));
+  border-radius: 8px;
+}
+
+/* ---------- 10. 页脚 ---------- */
+#footer {
+  background: transparent !important;
+  color: #6b7c88;
+}
+
+/* ---------- 11. 暗色模式适配 ---------- */
+[data-theme="dark"] {
+  --c-bg: #101820;
+  --c-card: rgba(30, 42, 54, 0.72);
+  --c-text: #cfe3ef;
+}
+[data-theme="dark"] body {
+  background: linear-gradient(160deg, #0d141b 0%, #101a22 50%, #0b1218 100%) fixed;
+}
+[data-theme="dark"] #nav {
+  background: rgba(20, 28, 36, 0.75) !important;
+}
+[data-theme="dark"] .recent-post-item,
+[data-theme="dark"] .card-widget {
+  border-color: rgba(255, 255, 255, 0.08);
+}
