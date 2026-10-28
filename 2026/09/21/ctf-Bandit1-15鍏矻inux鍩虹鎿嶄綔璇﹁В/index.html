@@ -1,0 +1,783 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>Bandit 1–15 关 Linux 基础操作详解 | 浪空</title><meta name="keywords" content="CTF,复盘,Web安全"><meta name="author" content="langkong1013"><meta name="copyright" content="langkong1013"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="Bandit 1–15 关 Linux 基础操作详解"><meta name="application-name" content="Bandit 1–15 关 Linux 基础操作详解"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="Bandit 1–15 关 Linux 基础操作详解"><meta property="og:url" content="http://langkong1013.github.io/2026/09/21/ctf-Bandit1-15%E9%8D%8F%E7%9F%BBinux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8E%BF%E5%B6%84%E7%B6%94%E7%92%87%EF%B9%81%D0%92/index.html"><meta property="og:site_name" content="浪空"><meta property="og:description" content="—— 命令 · 原理 · 易错提醒（配套 OverTheWire Bandit 闯关） 适用：Linux 零基础 &amp;#x2F; CTF 入门 · 2026-09 〇、总览：关卡 ↔ 命令对照表   关卡 任务要点 核心命令    0 通过 SSH 登录服务器 ssh   0→1 读主目录里的 rea"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="http://langkong1013.github.io/img/furina-avatar.jpg"><meta property="article:author" content="langkong1013"><meta property="article:tag" content="CTF 学习笔记"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="http://langkong1013.github.io/img/furina-avatar.jpg"><meta name="description" content="—— 命令 · 原理 · 易错提醒（配套 OverTheWire Bandit 闯关） 适用：Linux 零基础 &amp;#x2F; CTF 入门 · 2026-09 〇、总览：关卡 ↔ 命令对照表   关卡 任务要点 核心命令    0 通过 SSH 登录服务器 ssh   0→1 读主目录里的 rea"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://langkong1013.github.io/2026/09/21/ctf-Bandit1-15%E9%8D%8F%E7%9F%BBinux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8E%BF%E5%B6%84%E7%B6%94%E7%92%87%EF%B9%81%D0%92/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2024/07/27/125766904/ba62475f396df9de3316a08ed9e65d86_5680958632268053399..png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: undefined,
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: langkong1013","link":"链接: ","source":"来源: 浪空","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '浪空',
+  title: 'Bandit 1–15 关 Linux 基础操作详解',
+  postAI: '',
+  pageFillDescription: '〇、总览：关卡 ↔ 命令对照表, 一、连接服务器：SSH, 1.1 基本用法, 例：ssh  -p 2220, 1.2 用私钥登录（第 13→14 关）, 易错提醒 ⚠️, 二、浏览文件与目录, 易错提醒 ⚠️, 三、处理特殊文件名（重点第 1→2、2→3 关）, 原理, 四、隐藏文件（第 3→4 关）, 五、判断文件类型：file（第 4→5 关）, 输出里 ASCII text 表示是文本文件；data x2F 其它表示二进制, 易错提醒 ⚠️, 六、查找文件：find（核心重点第 5→6、6→7 关）, 6.1 语法, 6.2 常用条件, 6.3 本阶段两关的标准命令, 第 5→6 关：找大小1033字节、不可执行的普通文件, 第 6→7 关：全盘找 属主bandit7、属组bandit6、大小33字节 的文件, 6.4 万能套路（以后 CTF 常用）, 易错提醒 ⚠️, 七、文本搜索与处理：grep x2F sort x2F uniq x2F strings x2F cut, 对应关卡, 八、编码与转换（第 10→11、11→12、12→13 关）, 8.1 base64（第 10→11 关）, 8.2 ROT13（第 11→12 关）, 8.3 十六进制还原（第 12→13 关）, 8.4 tr 通用用法, 九、压缩与解压（第 12→13 关）, 第 12→13 关的套路, 十、网络工具：nc x2F openssl x2F nmap（第 14→15、15→16 关）, 10.1 nc（netcat）—— 发送数据到端口, 10.2 openssl —— 走 SSLx2FTLS 的加密连接, 连上后输入上一关密码服务器会回给你下一关密码, 10.3 nmap —— 端口扫描（后面关卡会用）, 一句话区分, 十一、管道与重定向（贯穿全程）, 十二、权限基础（读懂 ls -l）, 附录：事半功倍的小习惯命令原理易错提醒配套闯关适用零基础入门总览关卡命令对照表关卡任务要点核心命令通过登录服务器读主目录里的文件文件名是单个文件名带空格以开头隐藏文件开头唯一人类可读的文件大小正好字节不可执行大小字节属主属组指定某行含关键字只出现一次的那一行二进制里含的文本内容是编码内容是加密十六进制多层压缩用私钥文件登录向某端口发送数据通过发送数据下面按知识主题逐一详解每个主题都标注了它对应哪一关一连接服务器基本用法用户名主机地址端口号例首次连接会问输入回车随后提示输入密码输入密码时屏幕不显示任何字符这是正常的退出登录输入用私钥登录第关私钥权限必须是否则报错易错提醒端口务必写对是不是私钥权限过宽如会被拒绝修正若报刚握手就被断多半是新的问题加即可二浏览文件与目录命令作用示例显示当前所在目录列出目录内容显示隐藏文件含开头显示详细信息权限属主大小切换目录一次性输出文件内容分页查看大文件用空格翻页退出看开头结尾若干行易错提醒二进制文件会刷一屏乱码还可能把终端显示搞乱敲回车恢复只能读文件不能读目录读目录用三处理特殊文件名重点第关里空格是参数分隔符而以开头会被当成命令选项两类特殊文件名要会处理情况解决办法示例文件名以开头前面加文件名带空格用引号包住或转义以开头带空格两者结合想让程序把后都当文件名用分隔符原理单独出现时很多命令把它理解为标准输入输出如会等你从键盘输入表示当前目录加前缀后参数不再以开头就不被当选项了通配符匹配到的文件若以开头同样可能被当选项注意用四隐藏文件第关以开头的文件目录是隐藏的普通看不到必须或代表当前目录代表上级目录所以里总有和常见隐藏文件配置五判断文件类型第关通过读取文件头部的魔数判断文件真实类型做取证题必备查看当前目录所有文件的类型输出里表示是文本文件其它表示二进制易错提醒扩展名不可信一个也可能是图片以的结果为准二进制文件里想找文本用见第七节六查找文件核心重点第关语法从哪找条件动作常用条件条件含义模式按文件名支持通配普通文件目录链接大小为字节字节用户名属主是某用户组名属组是某组权限恰好为可执行不可执行只找一层不递归条件取反排除本阶段两关的标准命令第关找大小字节不可执行的普通文件第关全盘找属主属组大小字节的文件万能套路以后常用全盘找名字含的文件找所有找到后对每个文件搜内容易错提醒的坑默认单位是字节块要按字节必须加如与后面的条件之间要有空格权限报错太多时末尾加屏蔽错误信息默认递归所有子目录个文件夹也能一次找完七文本搜索与处理命令作用常用选项与示例按关键字搜索文本忽略大小写行号反选递归按行排序数字序倒序去除相邻重复行统计次数只显示唯一行只显示重复行从二进制里抽出可打印字符串按列提取对应关卡第关找含关键字的那一行第关先排序再找只出现一次的行只能处理相邻重复所以必须先第关二进制里找含的可读文本八编码与转换第关第关解码不加是编码第关是把每个字母后移位加密解密是同一个操作用做字符替换十六进制还原第关查看十六进制表示反向把十六进制文本还原成原文件通用用法字符替换删除旧字符集新字符集删除字符压缩重复字符九压缩与解压第关命令作用解解解解判断到底是哪种格式扩展名可能骗人第关的套路这个文件被反复压缩了多次而且后缀名会骗人循环文件判断真实类型用对应命令解压改名再看直到变成常见顺序最后是文本密码十网络工具第关发送数据到端口连上后手动输入内容密码直接把密码发过去走的加密连接连上后输入上一关密码服务器会回给你下一关密码端口扫描后面关卡会用一句话区分明文连接加密连接多了握手十一管道与重定向贯穿全程符号含义管道把前一个命令的输出作为后一个命令的输入覆盖写入文件追加写入文件从文件读入把错误信息写入文件把标准输出和错误一起处理丢弃错误信息常用管道组合示例管道组合示例十二权限基础读懂字段含义第位普通文件目录链接后位三组属主属组其他人各占读写执行数字硬链接数属主属组文件大小字节设权限为属主可读写其他人无权私钥必须这样给所有用户加执行权限后面关卡会用到属主执行位为届时再深入附录事半功倍的小习惯快捷键补全翻历史搜历史中断清屏随时求助命令退出命令网站解析整条命令记笔记存本地服务器主目录不可写密码随做随记卡住先自己试看不懂的英文说明多读两遍先看全貌',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-10-28 16:50:16',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 8.1.2"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://npm.elemecdn.com/anzhiyu-blog-static@1.0.4/img/avatar.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">浪空</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/CTF/" style="font-size: 1.05rem;">CTF<sup>32</sup></a><a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 1.05rem;">Web安全<sup>32</sup></a><a href="/tags/%E5%A4%8D%E7%9B%98/" style="font-size: 1.05rem;">复盘<sup>32</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/10/"><span class="card-archive-list-date">十月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">9</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/09/"><span class="card-archive-list-date">九月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">24</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF-%E9%94%99%E9%A2%98%E5%A4%8D%E7%9B%98/" itemprop="url">CTF 错题复盘</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/CTF/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>CTF</span></a><a class="article-meta__tags" href="/tags/%E5%A4%8D%E7%9B%98/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>复盘</span></a><a class="article-meta__tags" href="/tags/Web%E5%AE%89%E5%85%A8/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>Web安全</span></a></span></div></div><h1 class="post-title" itemprop="name headline">Bandit 1–15 关 Linux 基础操作详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2026-09-21T01:11:08.000Z" title="发表于 2026-09-21 09:11:08">2026-09-21</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2026-10-28T08:50:16.522Z" title="更新于 2026-10-28 16:50:16">2026-10-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为长沙"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>长沙</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src=""></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://langkong1013.github.io/2026/09/21/ctf-Bandit1-15%E9%8D%8F%E7%9F%BBinux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8E%BF%E5%B6%84%E7%B6%94%E7%92%87%EF%B9%81%D0%92/"><header><a class="post-meta-categories" href="/categories/CTF-%E9%94%99%E9%A2%98%E5%A4%8D%E7%9B%98/" itemprop="url">CTF 错题复盘</a><a href="/tags/CTF/" tabindex="-1" itemprop="url">CTF</a><a href="/tags/%E5%A4%8D%E7%9B%98/" tabindex="-1" itemprop="url">复盘</a><a href="/tags/Web%E5%AE%89%E5%85%A8/" tabindex="-1" itemprop="url">Web安全</a><h1 id="CrawlerTitle" itemprop="name headline">Bandit 1–15 关 Linux 基础操作详解</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">langkong1013</span><time itemprop="dateCreated datePublished" datetime="2026-09-21T01:11:08.000Z" title="发表于 2026-09-21 09:11:08">2026-09-21</time><time itemprop="dateCreated datePublished" datetime="2026-10-28T08:50:16.522Z" title="更新于 2026-10-28 16:50:16">2026-10-28</time></header><p>—— 命令 · 原理 · 易错提醒（配套 OverTheWire Bandit 闯关）</p>
+<p>适用：Linux 零基础 &#x2F; CTF 入门 · 2026-09</p>
+<h2 id="〇、总览：关卡-↔-命令对照表"><a href="#〇、总览：关卡-↔-命令对照表" class="headerlink" title="〇、总览：关卡 ↔ 命令对照表"></a>〇、总览：关卡 ↔ 命令对照表</h2><table>
+<thead>
+<tr>
+<th>关卡</th>
+<th>任务要点</th>
+<th>核心命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>通过 SSH 登录服务器</td>
+<td>ssh</td>
+</tr>
+<tr>
+<td>0→1</td>
+<td>读主目录里的 readme 文件</td>
+<td>ls、cat</td>
+</tr>
+<tr>
+<td>1→2</td>
+<td>文件名是单个 -</td>
+<td>cat .&#x2F;-</td>
+</tr>
+<tr>
+<td>2→3</td>
+<td>文件名带空格、以 – 开头</td>
+<td>cat “.&#x2F;…”、cat –</td>
+</tr>
+<tr>
+<td>3→4</td>
+<td>隐藏文件（. 开头）</td>
+<td>cd、ls -a</td>
+</tr>
+<tr>
+<td>4→5</td>
+<td>唯一”人类可读”的文件</td>
+<td>file</td>
+</tr>
+<tr>
+<td>5→6</td>
+<td>大小正好 1033 字节、不可执行</td>
+<td>find -type -size -executable</td>
+</tr>
+<tr>
+<td>6→7</td>
+<td>大小 33 字节、属主&#x2F;属组指定</td>
+<td>find -user -group -size + 2&gt;&#x2F;dev&#x2F;null</td>
+</tr>
+<tr>
+<td>7→8</td>
+<td>某行含关键字 millionth</td>
+<td>grep</td>
+</tr>
+<tr>
+<td>8→9</td>
+<td>只出现一次的那一行</td>
+<td>sort、uniq -u</td>
+</tr>
+<tr>
+<td>9→10</td>
+<td>二进制里含 “&#x3D;” 的文本</td>
+<td>strings、grep</td>
+</tr>
+<tr>
+<td>10→11</td>
+<td>内容是 base64 编码</td>
+<td>base64 -d</td>
+</tr>
+<tr>
+<td>11→12</td>
+<td>内容是 ROT13 加密</td>
+<td>tr</td>
+</tr>
+<tr>
+<td>12→13</td>
+<td>十六进制 + 多层压缩（gzip&#x2F;bzip2&#x2F;tar）</td>
+<td>xxd -r、file、gzip&#x2F;bzip2&#x2F;tar</td>
+</tr>
+<tr>
+<td>13→14</td>
+<td>用私钥文件登录</td>
+<td>ssh -i、chmod 600</td>
+</tr>
+<tr>
+<td>14→15</td>
+<td>向某端口发送数据</td>
+<td>nc</td>
+</tr>
+<tr>
+<td>15→16</td>
+<td>通过 SSL 发送数据</td>
+<td>openssl s_client</td>
+</tr>
+</tbody></table>
+<p>下面按”知识主题”逐一详解，每个主题都标注了它对应哪一关。</p>
+<span id="more"></span>
+
+<h2 id="一、连接服务器：SSH"><a href="#一、连接服务器：SSH" class="headerlink" title="一、连接服务器：SSH"></a>一、连接服务器：SSH</h2><h3 id="1-1-基本用法"><a href="#1-1-基本用法" class="headerlink" title="1.1 基本用法"></a>1.1 基本用法</h3><p>ssh 用户名@主机地址 -p 端口号</p>
+<h1 id="例：ssh-bandit0-bandit-labs-overthewire-org-p-2220"><a href="#例：ssh-bandit0-bandit-labs-overthewire-org-p-2220" class="headerlink" title="例：ssh bandit0@bandit.labs.overthewire.org -p 2220"></a>例：ssh <a href="mailto:&#x62;&#97;&#x6e;&#x64;&#105;&#116;&#48;&#64;&#x62;&#97;&#x6e;&#100;&#x69;&#x74;&#46;&#108;&#97;&#98;&#x73;&#x2e;&#x6f;&#118;&#101;&#x72;&#116;&#x68;&#x65;&#x77;&#x69;&#x72;&#101;&#46;&#x6f;&#x72;&#x67;">bandit0@bandit.labs.overthewire.org</a> -p 2220</h1><ul>
+<li>首次连接会问 “Are you sure you want to continue connecting” → 输入 yes 回车；</li>
+<li>随后提示 password：→ 输入密码。<strong>输入密码时屏幕不显示任何字符，这是正常的</strong>。</li>
+<li>退出登录：输入 exit。</li>
+</ul>
+<h3 id="1-2-用私钥登录（第-13→14-关）"><a href="#1-2-用私钥登录（第-13→14-关）" class="headerlink" title="1.2 用私钥登录（第 13→14 关）"></a>1.2 用私钥登录（第 13→14 关）</h3><p>chmod 600 sshkey.private        # 私钥权限必须是 600，否则报错<br>ssh -i sshkey.private bandit14@localhost -p 2220</p>
+<h3 id="易错提醒-⚠️"><a href="#易错提醒-⚠️" class="headerlink" title="易错提醒 ⚠️"></a>易错提醒 ⚠️</h3><ul>
+<li>端口务必写对：Bandit 是 2220，不是 22；</li>
+<li>私钥权限过宽（如 777）会被拒绝：”permissions are too open” → chmod 600 修正；</li>
+<li>若报 Connection closed（刚握手就被断）：多半是 VMware NAT + 新 OpenSSH 的 IPQoS 问题，加 <code>IPQoS throughput</code> 即可。</li>
+</ul>
+<h2 id="二、浏览文件与目录"><a href="#二、浏览文件与目录" class="headerlink" title="二、浏览文件与目录"></a>二、浏览文件与目录</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pwd</td>
+<td>显示当前所在目录</td>
+<td>pwd</td>
+</tr>
+<tr>
+<td>ls</td>
+<td>列出目录内容</td>
+<td>ls &#x2F; ls -l &#x2F; ls -a &#x2F; ls -la &#x2F; ls -lh</td>
+</tr>
+<tr>
+<td>ls -a</td>
+<td>显示隐藏文件（含 . 开头）</td>
+<td>ls -a</td>
+</tr>
+<tr>
+<td>ls -l</td>
+<td>显示详细信息（权限&#x2F;属主&#x2F;大小）</td>
+<td>ls -l</td>
+</tr>
+<tr>
+<td>cd</td>
+<td>切换目录</td>
+<td>cd inhere &#x2F; cd .. &#x2F; cd ~ &#x2F; cd -</td>
+</tr>
+<tr>
+<td>cat</td>
+<td>一次性输出文件内容</td>
+<td>cat readme</td>
+</tr>
+<tr>
+<td>less</td>
+<td>分页查看（大文件用）</td>
+<td>less bigfile（空格翻页，q 退出）</td>
+</tr>
+<tr>
+<td>head &#x2F; tail</td>
+<td>看开头 &#x2F; 结尾若干行</td>
+<td>head -n 5 f &#x2F; tail -f f</td>
+</tr>
+</tbody></table>
+<h3 id="易错提醒-⚠️-1"><a href="#易错提醒-⚠️-1" class="headerlink" title="易错提醒 ⚠️"></a>易错提醒 ⚠️</h3><ul>
+<li>cat 二进制文件会刷一屏乱码，还可能把终端显示搞乱 → 敲 <code>reset</code> 回车恢复；</li>
+<li>cat 只能读”文件”，不能读目录（读目录用 ls）。</li>
+</ul>
+<h2 id="三、处理特殊文件名（重点，第-1→2、2→3-关）"><a href="#三、处理特殊文件名（重点，第-1→2、2→3-关）" class="headerlink" title="三、处理特殊文件名（重点，第 1→2、2→3 关）"></a>三、处理特殊文件名（重点，第 1→2、2→3 关）</h2><p>Linux 里空格是”参数分隔符”，而”以 - 开头”会被当成命令选项。两类特殊文件名要会处理：</p>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>解决办法</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件名以 - 开头</td>
+<td>前面加 .&#x2F;</td>
+<td>cat .&#x2F;-file00</td>
+</tr>
+<tr>
+<td>文件名带空格</td>
+<td>用引号包住，或 \ 转义</td>
+<td>cat “my file.txt” &#x2F; cat my\ file.txt</td>
+</tr>
+<tr>
+<td>以 – 开头 + 带空格</td>
+<td>两者结合</td>
+<td>cat “.&#x2F;–spaces in this filename–”</td>
+</tr>
+<tr>
+<td>想让程序把 – 后都当文件名</td>
+<td>用 – 分隔符</td>
+<td>cat – “–spaces in this filename–”</td>
+</tr>
+</tbody></table>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ul>
+<li><ul>
+<li>单独出现时，很多命令把它理解为”标准输入&#x2F;输出”（如 cat - 会等你从键盘输入）；</li>
+</ul>
+</li>
+<li>.&#x2F; 表示”当前目录”，加前缀后参数不再以 - 开头，就不被当选项了；</li>
+<li>通配符 * 匹配到的文件若以 - 开头，同样可能被当选项，注意用 .&#x2F; 。</li>
+</ul>
+<h2 id="四、隐藏文件（第-3→4-关）"><a href="#四、隐藏文件（第-3→4-关）" class="headerlink" title="四、隐藏文件（第 3→4 关）"></a>四、隐藏文件（第 3→4 关）</h2><ul>
+<li>以 . 开头的文件&#x2F;目录是”隐藏”的，普通 ls 看不到，必须 ls -a 或 ls -la；</li>
+<li>. 代表当前目录，.. 代表上级目录（所以 ls -a 里总有 . 和 ..）；</li>
+<li>常见隐藏文件：.bashrc、.profile（shell 配置）。</li>
+</ul>
+<h2 id="五、判断文件类型：file（第-4→5-关）"><a href="#五、判断文件类型：file（第-4→5-关）" class="headerlink" title="五、判断文件类型：file（第 4→5 关）"></a>五、判断文件类型：file（第 4→5 关）</h2><p>file 通过读取文件头部的”魔数”判断文件真实类型，做 Misc&#x2F;取证题必备。</p>
+<p>file .&#x2F;*              # 查看当前目录所有文件的类型</p>
+<h1 id="输出里-ASCII-text-表示是文本文件；data-其它表示二进制"><a href="#输出里-ASCII-text-表示是文本文件；data-其它表示二进制" class="headerlink" title="输出里 ASCII text 表示是文本文件；data &#x2F; 其它表示二进制"></a>输出里 ASCII text 表示是文本文件；data &#x2F; 其它表示二进制</h1><h3 id="易错提醒-⚠️-2"><a href="#易错提醒-⚠️-2" class="headerlink" title="易错提醒 ⚠️"></a>易错提醒 ⚠️</h3><ul>
+<li>扩展名不可信（一个 .txt 也可能是图片），以 file 的结果为准；</li>
+<li>二进制文件里想找文本，用 strings（见第七节）。</li>
+</ul>
+<h2 id="六、查找文件：find（核心重点，第-5→6、6→7-关）"><a href="#六、查找文件：find（核心重点，第-5→6、6→7-关）" class="headerlink" title="六、查找文件：find（核心重点，第 5→6、6→7 关）"></a>六、查找文件：find（核心重点，第 5→6、6→7 关）</h2><h3 id="6-1-语法"><a href="#6-1-语法" class="headerlink" title="6.1 语法"></a>6.1 语法</h3><p>find [从哪找] [条件…] [动作…]</p>
+<h3 id="6-2-常用条件"><a href="#6-2-常用条件" class="headerlink" title="6.2 常用条件"></a>6.2 常用条件</h3><table>
+<thead>
+<tr>
+<th>条件</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-name “模式”</td>
+<td>按文件名（支持 * 通配）</td>
+</tr>
+<tr>
+<td>-type f &#x2F; d &#x2F; l</td>
+<td>普通文件 &#x2F; 目录 &#x2F; 链接</td>
+</tr>
+<tr>
+<td>-size 1033c</td>
+<td>大小为 1033 字节（c&#x3D;字节；k&#x3D;KB；M&#x3D;MB）</td>
+</tr>
+<tr>
+<td>-user 用户名</td>
+<td>属主是某用户</td>
+</tr>
+<tr>
+<td>-group 组名</td>
+<td>属组是某组</td>
+</tr>
+<tr>
+<td>-perm 644</td>
+<td>权限恰好为 644</td>
+</tr>
+<tr>
+<td>-executable &#x2F; ! -executable</td>
+<td>可执行 &#x2F; 不可执行</td>
+</tr>
+<tr>
+<td>-maxdepth 1</td>
+<td>只找一层，不递归</td>
+</tr>
+<tr>
+<td>! 条件</td>
+<td>取反（排除）</td>
+</tr>
+</tbody></table>
+<h3 id="6-3-本阶段两关的标准命令"><a href="#6-3-本阶段两关的标准命令" class="headerlink" title="6.3 本阶段两关的标准命令"></a>6.3 本阶段两关的标准命令</h3><h1 id="第-5→6-关：找大小1033字节、不可执行的普通文件"><a href="#第-5→6-关：找大小1033字节、不可执行的普通文件" class="headerlink" title="第 5→6 关：找大小1033字节、不可执行的普通文件"></a>第 5→6 关：找大小1033字节、不可执行的普通文件</h1><p>find . -type f -size 1033c ! -executable</p>
+<h1 id="第-6→7-关：全盘找-属主bandit7、属组bandit6、大小33字节-的文件"><a href="#第-6→7-关：全盘找-属主bandit7、属组bandit6、大小33字节-的文件" class="headerlink" title="第 6→7 关：全盘找 属主bandit7、属组bandit6、大小33字节 的文件"></a>第 6→7 关：全盘找 属主bandit7、属组bandit6、大小33字节 的文件</h1><p>find &#x2F; -user bandit7 -group bandit6 -size 33c 2&gt;&#x2F;dev&#x2F;null</p>
+<h3 id="6-4-万能套路（以后-CTF-常用）"><a href="#6-4-万能套路（以后-CTF-常用）" class="headerlink" title="6.4 万能套路（以后 CTF 常用）"></a>6.4 万能套路（以后 CTF 常用）</h3><p>find &#x2F; -name “flag*” 2&gt;&#x2F;dev&#x2F;null        # 全盘找名字含 flag 的文件<br>find . -name “*.txt”                     # 找所有 txt<br>find . -type f -exec grep -l “flag” {} ;   # 找到后对每个文件搜内容</p>
+<h3 id="易错提醒-⚠️-3"><a href="#易错提醒-⚠️-3" class="headerlink" title="易错提醒 ⚠️"></a>易错提醒 ⚠️</h3><ul>
+<li><strong>-size 的坑</strong>：默认单位是 512 字节块！要按”字节”必须加 c，如 -size 1033c；</li>
+<li>! 与后面的条件之间<strong>要有空格</strong>：<code>! -executable</code>；</li>
+<li>权限报错太多时，末尾加 <code>2&gt;/dev/null</code> 屏蔽错误信息；</li>
+<li>find 默认递归所有子目录，20 个文件夹也能一次找完。</li>
+</ul>
+<h2 id="七、文本搜索与处理：grep-sort-uniq-strings-cut"><a href="#七、文本搜索与处理：grep-sort-uniq-strings-cut" class="headerlink" title="七、文本搜索与处理：grep &#x2F; sort &#x2F; uniq &#x2F; strings &#x2F; cut"></a>七、文本搜索与处理：grep &#x2F; sort &#x2F; uniq &#x2F; strings &#x2F; cut</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+<th>常用选项与示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>grep</td>
+<td>按关键字搜索文本</td>
+<td>grep millionth data.txt ；-i 忽略大小写，-n 行号，-v 反选，-r 递归</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>按行排序</td>
+<td>sort data.txt ；-n 数字序，-r 倒序</td>
+</tr>
+<tr>
+<td>uniq</td>
+<td>去除”相邻”重复行</td>
+<td>sort f | uniq -u ；-c 统计次数，-u 只显示唯一行，-d 只显示重复行</td>
+</tr>
+<tr>
+<td>strings</td>
+<td>从二进制里抽出可打印字符串</td>
+<td>strings data.txt | grep “&#x3D;”</td>
+</tr>
+<tr>
+<td>cut</td>
+<td>按列提取</td>
+<td>cut -d ‘:’ -f1 passwd</td>
+</tr>
+</tbody></table>
+<h3 id="对应关卡"><a href="#对应关卡" class="headerlink" title="对应关卡"></a>对应关卡</h3><ul>
+<li>第 7→8 关：<code>grep millionth data.txt</code> —— 找含关键字的那一行；</li>
+<li>第 8→9 关：<code>sort data.txt | uniq -u</code> —— 先排序再找”只出现一次”的行（uniq 只能处理相邻重复，所以必须先 sort）；</li>
+<li>第 9→10 关：<code>strings data.txt | grep &quot;=&quot;</code> —— 二进制里找含 &#x3D; 的可读文本。</li>
+</ul>
+<h2 id="八、编码与转换（第-10→11、11→12、12→13-关）"><a href="#八、编码与转换（第-10→11、11→12、12→13-关）" class="headerlink" title="八、编码与转换（第 10→11、11→12、12→13 关）"></a>八、编码与转换（第 10→11、11→12、12→13 关）</h2><h3 id="8-1-base64（第-10→11-关）"><a href="#8-1-base64（第-10→11-关）" class="headerlink" title="8.1 base64（第 10→11 关）"></a>8.1 base64（第 10→11 关）</h3><p>base64 -d data.txt        # -d &#x3D; decode 解码（不加 -d 是编码）</p>
+<h3 id="8-2-ROT13（第-11→12-关）"><a href="#8-2-ROT13（第-11→12-关）" class="headerlink" title="8.2 ROT13（第 11→12 关）"></a>8.2 ROT13（第 11→12 关）</h3><p>ROT13 是把每个字母后移 13 位（A↔N，B↔O…），加密解密是同一个操作。用 tr 做字符替换：</p>
+<p>tr ‘A-Za-z’ ‘N-ZA-Mn-za-m’ &lt; data.txt</p>
+<h3 id="8-3-十六进制还原（第-12→13-关）"><a href="#8-3-十六进制还原（第-12→13-关）" class="headerlink" title="8.3 十六进制还原（第 12→13 关）"></a>8.3 十六进制还原（第 12→13 关）</h3><p>xxd data.txt            # 查看十六进制表示<br>xxd -r data.txt &gt; out   # -r 反向：把十六进制文本还原成原文件</p>
+<h3 id="8-4-tr-通用用法"><a href="#8-4-tr-通用用法" class="headerlink" title="8.4 tr 通用用法"></a>8.4 tr 通用用法</h3><ul>
+<li>字符替换&#x2F;删除：tr 旧字符集 新字符集 ；-d 删除字符；-s 压缩重复字符。</li>
+</ul>
+<h2 id="九、压缩与解压（第-12→13-关）"><a href="#九、压缩与解压（第-12→13-关）" class="headerlink" title="九、压缩与解压（第 12→13 关）"></a>九、压缩与解压（第 12→13 关）</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>gzip -d f.gz &#x2F; gunzip f.gz</td>
+<td>解 gzip</td>
+</tr>
+<tr>
+<td>bzip2 -d f.bz2</td>
+<td>解 bzip2</td>
+</tr>
+<tr>
+<td>tar xf f.tar</td>
+<td>解 tar</td>
+</tr>
+<tr>
+<td>tar xzf f.tar.gz</td>
+<td>解 tar.gz</td>
+</tr>
+<tr>
+<td>file f</td>
+<td>判断到底是哪种格式（扩展名可能骗人）</td>
+</tr>
+</tbody></table>
+<h3 id="第-12→13-关的套路"><a href="#第-12→13-关的套路" class="headerlink" title="第 12→13 关的套路"></a>第 12→13 关的套路</h3><ul>
+<li>这个文件被<strong>反复压缩</strong>了多次，而且后缀名会骗人；</li>
+<li>循环：<code>file 文件</code> 判断真实类型 → 用对应命令解压 → 改名 → 再看 → 直到变成 ASCII text；</li>
+<li>常见顺序：hexdump(xxd -r) → gzip → bzip2 → tar → … → 最后是文本密码。</li>
+</ul>
+<h2 id="十、网络工具：nc-openssl-nmap（第-14→15、15→16-关）"><a href="#十、网络工具：nc-openssl-nmap（第-14→15、15→16-关）" class="headerlink" title="十、网络工具：nc &#x2F; openssl &#x2F; nmap（第 14→15、15→16 关）"></a>十、网络工具：nc &#x2F; openssl &#x2F; nmap（第 14→15、15→16 关）</h2><h3 id="10-1-nc（netcat）——-发送数据到端口"><a href="#10-1-nc（netcat）——-发送数据到端口" class="headerlink" title="10.1 nc（netcat）—— 发送数据到端口"></a>10.1 nc（netcat）—— 发送数据到端口</h3><p>nc localhost 30000                 # 连上后手动输入内容<br>echo “密码” | nc localhost 30000     # 直接把密码发过去</p>
+<h3 id="10-2-openssl-——-走-SSL-TLS-的加密连接"><a href="#10-2-openssl-——-走-SSL-TLS-的加密连接" class="headerlink" title="10.2 openssl —— 走 SSL&#x2F;TLS 的加密连接"></a>10.2 openssl —— 走 SSL&#x2F;TLS 的加密连接</h3><p>openssl s_client -connect localhost:30001</p>
+<h1 id="连上后输入上一关密码，服务器会回给你下一关密码"><a href="#连上后输入上一关密码，服务器会回给你下一关密码" class="headerlink" title="连上后输入上一关密码，服务器会回给你下一关密码"></a>连上后输入上一关密码，服务器会回给你下一关密码</h1><h3 id="10-3-nmap-——-端口扫描（后面关卡会用）"><a href="#10-3-nmap-——-端口扫描（后面关卡会用）" class="headerlink" title="10.3 nmap —— 端口扫描（后面关卡会用）"></a>10.3 nmap —— 端口扫描（后面关卡会用）</h3><p>nmap -p 31000-32000 localhost</p>
+<h3 id="一句话区分"><a href="#一句话区分" class="headerlink" title="一句话区分"></a>一句话区分</h3><ul>
+<li>nc &#x3D; 明文连接；openssl s_client &#x3D; 加密连接（多了 SSL 握手）。</li>
+</ul>
+<h2 id="十一、管道与重定向（贯穿全程）"><a href="#十一、管道与重定向（贯穿全程）" class="headerlink" title="十一、管道与重定向（贯穿全程）"></a>十一、管道与重定向（贯穿全程）</h2><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>|</td>
+<td>管道：把前一个命令的输出，作为后一个命令的输入</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>覆盖写入文件</td>
+</tr>
+<tr>
+<td>&gt;&gt;</td>
+<td>追加写入文件</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>从文件读入</td>
+</tr>
+<tr>
+<td>2&gt;</td>
+<td>把错误信息写入文件</td>
+</tr>
+<tr>
+<td>2&gt;&amp;1</td>
+<td>把标准输出和错误一起处理</td>
+</tr>
+<tr>
+<td>2&gt;&#x2F;dev&#x2F;null</td>
+<td>丢弃错误信息（常用）</td>
+</tr>
+</tbody></table>
+<p>sort data.txt | uniq -u              # 管道组合示例<br>strings data.txt | grep “&#x3D;”          # 管道组合示例</p>
+<h2 id="十二、权限基础（读懂-ls-l）"><a href="#十二、权限基础（读懂-ls-l）" class="headerlink" title="十二、权限基础（读懂 ls -l）"></a>十二、权限基础（读懂 ls -l）</h2><p>-rw-r—–  1 bandit1 bandit0  438 Jun 24 14:58 readme</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第1位 - &#x2F; d</td>
+<td>- 普通文件；d 目录；l 链接</td>
+</tr>
+<tr>
+<td>后9位 rwxrwxrwx</td>
+<td>三组：属主 &#x2F; 属组 &#x2F; 其他人，各占 r读(4) w写(2) x执行(1)</td>
+</tr>
+<tr>
+<td>数字</td>
+<td>硬链接数</td>
+</tr>
+<tr>
+<td>bandit1</td>
+<td>属主</td>
+</tr>
+<tr>
+<td>bandit0</td>
+<td>属组</td>
+</tr>
+<tr>
+<td>438</td>
+<td>文件大小（字节）</td>
+</tr>
+</tbody></table>
+<ul>
+<li>chmod 600 file：设权限为”属主可读写、其他人无权”（私钥必须这样）；</li>
+<li>chmod +x file：给所有用户加执行权限；</li>
+<li>后面关卡会用到 setuid（属主执行位为 s），届时再深入。</li>
+</ul>
+<h2 id="附录：事半功倍的小习惯"><a href="#附录：事半功倍的小习惯" class="headerlink" title="附录：事半功倍的小习惯"></a>附录：事半功倍的小习惯</h2><ul>
+<li>快捷键：Tab 补全、↑ 翻历史、Ctrl+R 搜历史、Ctrl+C 中断、Ctrl+L 清屏；</li>
+<li>随时求助：<code>man 命令</code>（q 退出）、<code>命令 --help</code>、网站 explainshell.com 解析整条命令；</li>
+<li>记笔记存<strong>本地</strong>（服务器主目录不可写）；密码随做随记；</li>
+<li>卡住先自己试：看不懂的英文说明多读两遍，先 ls -la 看全貌。</li>
+</ul>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/furina-avatar.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/furina-avatar.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">langkong1013</div><div class="post-copyright__author_desc">记录学习与踩坑</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://langkong1013.github.io/2026/09/21/ctf-Bandit1-15%E9%8D%8F%E7%9F%BBinux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8E%BF%E5%B6%84%E7%B6%94%E7%92%87%EF%B9%81%D0%92/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://langkong1013.github.io/2026/09/21/ctf-Bandit1-15%E9%8D%8F%E7%9F%BBinux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8E%BF%E5%B6%84%E7%B6%94%E7%92%87%EF%B9%81%D0%92/')">Bandit 1–15 关 Linux 基础操作详解</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://langkong1013.github.io/2026/09/21/ctf-Bandit1-15%E9%8D%8F%E7%9F%BBinux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8E%BF%E5%B6%84%E7%B6%94%E7%92%87%EF%B9%81%D0%92/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=Bandit 1–15 关 Linux 基础操作详解&amp;url=http://langkong1013.github.io/2026/09/21/ctf-Bandit1-15%E9%8D%8F%E7%9F%BBinux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8E%BF%E5%B6%84%E7%B6%94%E7%92%87%EF%B9%81%D0%92/&amp;pic=" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://langkong1013.github.io" target="_blank">浪空</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/CTF/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>CTF<span class="tagsPageCount">32</span></a><a class="post-meta__box__tags" href="/tags/%E5%A4%8D%E7%9B%98/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>复盘<span class="tagsPageCount">32</span></a><a class="post-meta__box__tags" href="/tags/Web%E5%AE%89%E5%85%A8/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>Web安全<span class="tagsPageCount">32</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="/img/furina-avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2026/09/20/ctf-%E7%BC%83%E6%88%A0%E7%B2%B6%E7%80%B9%E5%A4%8A%E5%8F%8F%E7%BB%94%E7%82%B6%E7%A6%8C%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D%E6%B6%93%E5%B6%ADinux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8D%8F%E3%83%A9%E6%A3%AC/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">网络安全竞赛备战指南</div></div></a></div><div class="next-post pull-right"><a href="/2026/09/22/ctf-%E7%BB%9B%E6%83%A7%E5%9F%8C%E6%A3%B0%E6%A8%BA%E7%95%AC%E9%8F%81%E6%9D%91%EE%98%B2%E9%90%A9%E6%A8%B9%E7%AC%8C%E9%8E%BF%E5%B6%84%E7%B6%94%E9%8E%B5%E5%AC%AA%E5%94%BD/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">【入门】签到题</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2026/09/23/ctf-CTF%E9%8D%8F%E3%83%A9%E6%A3%AC%E9%90%AD%E3%83%A8%E7%98%91%E5%A8%93%E5%91%AD%E5%B4%9F/" title="CTF 入门知识清单（零基础详解版）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-09-23</div><div class="title">CTF 入门知识清单（零基础详解版）</div></div></a></div><div><a href="/2026/09/22/ctf-ASCII%E9%90%AE%E4%BD%B8%E7%95%AC%E9%8F%81%E6%9D%91%EE%98%B2%E9%90%A9%E6%A8%B9%E7%AC%8C%E9%8E%BF%E5%B6%84%E7%B6%94%E9%8E%B5%E5%AC%AA%E5%94%BD/" title="【基础】ASCII 码"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-09-22</div><div class="title">【基础】ASCII 码</div></div></a></div><div><a href="/2026/10/13/ctf-2026%E7%BB%80%E6%83%A7%E6%B4%9F%E9%8E%B7%E6%B6%99%E6%9F%8A%E7%92%A7%E6%B6%A2%EE%95%BD%E7%91%99%EF%BC%A2%E9%94%8B%E6%9F%8A%E9%8E%B5%E5%AC%AD%EE%87%9B%E7%91%99%EF%BD%87%E5%A2%97/" title="2026 社团招新赛题解 · 新手详解版"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-13</div><div class="title">2026 社团招新赛题解 · 新手详解版</div></div></a></div><div><a href="/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/" title="PHP 文件包含题解 + CTF² 平台学习计划"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-20</div><div class="title">PHP 文件包含题解 + CTF² 平台学习计划</div></div></a></div><div><a href="/2026/10/20/ctf-SQL%E5%A8%89%E3%84%A5%E5%8F%86%E9%90%A7%E8%AF%B2%E7%B6%8D%E7%BC%81%E6%9B%A1%E7%B9%83%E6%A3%B0%E6%A8%BF%D0%92/" title="SQL 注入登录绕过题解"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-20</div><div class="title">SQL 注入登录绕过题解</div></div></a></div><div><a href="/2026/10/20/ctf-GitHub%E9%8E%BB%E6%80%ADR%E7%80%B9%E5%B1%BE%E6%9A%A3%E7%80%B9%E7%82%B4%E6%90%B7%E9%8E%B5%E5%AC%AA%E5%94%BD/" title="GitHub 提 PR 完整实操手册"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-20</div><div class="title">GitHub 提 PR 完整实操手册</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/furina-avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">网安</div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://bu.dusays.com/2023/05/13/645fa415e8694.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%87%E3%80%81%E6%80%BB%E8%A7%88%EF%BC%9A%E5%85%B3%E5%8D%A1-%E2%86%94-%E5%91%BD%E4%BB%A4%E5%AF%B9%E7%85%A7%E8%A1%A8"><span class="toc-number">1.</span> <span class="toc-text">〇、总览：关卡 ↔ 命令对照表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%9ASSH"><span class="toc-number">2.</span> <span class="toc-text">一、连接服务器：SSH</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 基本用法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%8B%EF%BC%9Assh-bandit0-bandit-labs-overthewire-org-p-2220"><span class="toc-number">3.</span> <span class="toc-text">例：ssh bandit0@bandit.labs.overthewire.org -p 2220</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%94%A8%E7%A7%81%E9%92%A5%E7%99%BB%E5%BD%95%EF%BC%88%E7%AC%AC-13%E2%86%9214-%E5%85%B3%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">1.2 用私钥登录（第 13→14 关）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%93%E9%94%99%E6%8F%90%E9%86%92-%E2%9A%A0%EF%B8%8F"><span class="toc-number">3.2.</span> <span class="toc-text">易错提醒 ⚠️</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%B5%8F%E8%A7%88%E6%96%87%E4%BB%B6%E4%B8%8E%E7%9B%AE%E5%BD%95"><span class="toc-number">3.3.</span> <span class="toc-text">二、浏览文件与目录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%93%E9%94%99%E6%8F%90%E9%86%92-%E2%9A%A0%EF%B8%8F-1"><span class="toc-number">3.3.1.</span> <span class="toc-text">易错提醒 ⚠️</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%A4%84%E7%90%86%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%90%8D%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%8C%E7%AC%AC-1%E2%86%922%E3%80%812%E2%86%923-%E5%85%B3%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">三、处理特殊文件名（重点，第 1→2、2→3 关）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">3.4.1.</span> <span class="toc-text">原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E9%9A%90%E8%97%8F%E6%96%87%E4%BB%B6%EF%BC%88%E7%AC%AC-3%E2%86%924-%E5%85%B3%EF%BC%89"><span class="toc-number">3.5.</span> <span class="toc-text">四、隐藏文件（第 3→4 关）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%88%A4%E6%96%AD%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B%EF%BC%9Afile%EF%BC%88%E7%AC%AC-4%E2%86%925-%E5%85%B3%EF%BC%89"><span class="toc-number">3.6.</span> <span class="toc-text">五、判断文件类型：file（第 4→5 关）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E9%87%8C-ASCII-text-%E8%A1%A8%E7%A4%BA%E6%98%AF%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%9Bdata-%E5%85%B6%E5%AE%83%E8%A1%A8%E7%A4%BA%E4%BA%8C%E8%BF%9B%E5%88%B6"><span class="toc-number">4.</span> <span class="toc-text">输出里 ASCII text 表示是文本文件；data &#x2F; 其它表示二进制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%93%E9%94%99%E6%8F%90%E9%86%92-%E2%9A%A0%EF%B8%8F-2"><span class="toc-number">4.1.</span> <span class="toc-text">易错提醒 ⚠️</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6%EF%BC%9Afind%EF%BC%88%E6%A0%B8%E5%BF%83%E9%87%8D%E7%82%B9%EF%BC%8C%E7%AC%AC-5%E2%86%926%E3%80%816%E2%86%927-%E5%85%B3%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">六、查找文件：find（核心重点，第 5→6、6→7 关）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E8%AF%AD%E6%B3%95"><span class="toc-number">4.2.1.</span> <span class="toc-text">6.1 语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%B8%B8%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="toc-number">4.2.2.</span> <span class="toc-text">6.2 常用条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E6%9C%AC%E9%98%B6%E6%AE%B5%E4%B8%A4%E5%85%B3%E7%9A%84%E6%A0%87%E5%87%86%E5%91%BD%E4%BB%A4"><span class="toc-number">4.2.3.</span> <span class="toc-text">6.3 本阶段两关的标准命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-5%E2%86%926-%E5%85%B3%EF%BC%9A%E6%89%BE%E5%A4%A7%E5%B0%8F1033%E5%AD%97%E8%8A%82%E3%80%81%E4%B8%8D%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9A%84%E6%99%AE%E9%80%9A%E6%96%87%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text">第 5→6 关：找大小1033字节、不可执行的普通文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-6%E2%86%927-%E5%85%B3%EF%BC%9A%E5%85%A8%E7%9B%98%E6%89%BE-%E5%B1%9E%E4%B8%BBbandit7%E3%80%81%E5%B1%9E%E7%BB%84bandit6%E3%80%81%E5%A4%A7%E5%B0%8F33%E5%AD%97%E8%8A%82-%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">6.</span> <span class="toc-text">第 6→7 关：全盘找 属主bandit7、属组bandit6、大小33字节 的文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E4%B8%87%E8%83%BD%E5%A5%97%E8%B7%AF%EF%BC%88%E4%BB%A5%E5%90%8E-CTF-%E5%B8%B8%E7%94%A8%EF%BC%89"><span class="toc-number">6.1.</span> <span class="toc-text">6.4 万能套路（以后 CTF 常用）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%93%E9%94%99%E6%8F%90%E9%86%92-%E2%9A%A0%EF%B8%8F-3"><span class="toc-number">6.2.</span> <span class="toc-text">易错提醒 ⚠️</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%96%87%E6%9C%AC%E6%90%9C%E7%B4%A2%E4%B8%8E%E5%A4%84%E7%90%86%EF%BC%9Agrep-sort-uniq-strings-cut"><span class="toc-number">6.3.</span> <span class="toc-text">七、文本搜索与处理：grep &#x2F; sort &#x2F; uniq &#x2F; strings &#x2F; cut</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E5%BA%94%E5%85%B3%E5%8D%A1"><span class="toc-number">6.3.1.</span> <span class="toc-text">对应关卡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E7%BC%96%E7%A0%81%E4%B8%8E%E8%BD%AC%E6%8D%A2%EF%BC%88%E7%AC%AC-10%E2%86%9211%E3%80%8111%E2%86%9212%E3%80%8112%E2%86%9213-%E5%85%B3%EF%BC%89"><span class="toc-number">6.4.</span> <span class="toc-text">八、编码与转换（第 10→11、11→12、12→13 关）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-base64%EF%BC%88%E7%AC%AC-10%E2%86%9211-%E5%85%B3%EF%BC%89"><span class="toc-number">6.4.1.</span> <span class="toc-text">8.1 base64（第 10→11 关）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-ROT13%EF%BC%88%E7%AC%AC-11%E2%86%9212-%E5%85%B3%EF%BC%89"><span class="toc-number">6.4.2.</span> <span class="toc-text">8.2 ROT13（第 11→12 关）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%BF%98%E5%8E%9F%EF%BC%88%E7%AC%AC-12%E2%86%9213-%E5%85%B3%EF%BC%89"><span class="toc-number">6.4.3.</span> <span class="toc-text">8.3 十六进制还原（第 12→13 关）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-tr-%E9%80%9A%E7%94%A8%E7%94%A8%E6%B3%95"><span class="toc-number">6.4.4.</span> <span class="toc-text">8.4 tr 通用用法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E5%8E%8B%E7%BC%A9%E4%B8%8E%E8%A7%A3%E5%8E%8B%EF%BC%88%E7%AC%AC-12%E2%86%9213-%E5%85%B3%EF%BC%89"><span class="toc-number">6.5.</span> <span class="toc-text">九、压缩与解压（第 12→13 关）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC-12%E2%86%9213-%E5%85%B3%E7%9A%84%E5%A5%97%E8%B7%AF"><span class="toc-number">6.5.1.</span> <span class="toc-text">第 12→13 关的套路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7%EF%BC%9Anc-openssl-nmap%EF%BC%88%E7%AC%AC-14%E2%86%9215%E3%80%8115%E2%86%9216-%E5%85%B3%EF%BC%89"><span class="toc-number">6.6.</span> <span class="toc-text">十、网络工具：nc &#x2F; openssl &#x2F; nmap（第 14→15、15→16 关）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#10-1-nc%EF%BC%88netcat%EF%BC%89%E2%80%94%E2%80%94-%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE%E5%88%B0%E7%AB%AF%E5%8F%A3"><span class="toc-number">6.6.1.</span> <span class="toc-text">10.1 nc（netcat）—— 发送数据到端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-2-openssl-%E2%80%94%E2%80%94-%E8%B5%B0-SSL-TLS-%E7%9A%84%E5%8A%A0%E5%AF%86%E8%BF%9E%E6%8E%A5"><span class="toc-number">6.6.2.</span> <span class="toc-text">10.2 openssl —— 走 SSL&#x2F;TLS 的加密连接</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9E%E4%B8%8A%E5%90%8E%E8%BE%93%E5%85%A5%E4%B8%8A%E4%B8%80%E5%85%B3%E5%AF%86%E7%A0%81%EF%BC%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BC%9A%E5%9B%9E%E7%BB%99%E4%BD%A0%E4%B8%8B%E4%B8%80%E5%85%B3%E5%AF%86%E7%A0%81"><span class="toc-number">7.</span> <span class="toc-text">连上后输入上一关密码，服务器会回给你下一关密码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#10-3-nmap-%E2%80%94%E2%80%94-%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F%EF%BC%88%E5%90%8E%E9%9D%A2%E5%85%B3%E5%8D%A1%E4%BC%9A%E7%94%A8%EF%BC%89"><span class="toc-number">7.1.</span> <span class="toc-text">10.3 nmap —— 端口扫描（后面关卡会用）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E5%8F%A5%E8%AF%9D%E5%8C%BA%E5%88%86"><span class="toc-number">7.2.</span> <span class="toc-text">一句话区分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E7%AE%A1%E9%81%93%E4%B8%8E%E9%87%8D%E5%AE%9A%E5%90%91%EF%BC%88%E8%B4%AF%E7%A9%BF%E5%85%A8%E7%A8%8B%EF%BC%89"><span class="toc-number">7.3.</span> <span class="toc-text">十一、管道与重定向（贯穿全程）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%BA%8C%E3%80%81%E6%9D%83%E9%99%90%E5%9F%BA%E7%A1%80%EF%BC%88%E8%AF%BB%E6%87%82-ls-l%EF%BC%89"><span class="toc-number">7.4.</span> <span class="toc-text">十二、权限基础（读懂 ls -l）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A%E4%BA%8B%E5%8D%8A%E5%8A%9F%E5%80%8D%E7%9A%84%E5%B0%8F%E4%B9%A0%E6%83%AF"><span class="toc-number">7.5.</span> <span class="toc-text">附录：事半功倍的小习惯</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" title="我的第一篇博客">我的第一篇博客</a><time datetime="2026-10-22T06:42:53.000Z" title="发表于 2026-10-22 14:42:53">2026-10-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/21/ctf-Web%E9%8F%82%E7%89%88%E5%A2%9C%E7%80%B9%E5%B1%BE%E6%9A%A3%E7%80%9B%EF%B8%BF%E7%AF%84%E7%91%99%E5%8B%AB%E5%9E%9D%E9%94%9B%E5%A0%A2%E7%B2%A8%E9%8D%9A%E5%A0%A2%E5%B9%87%E9%90%98%E8%AE%B9%E7%B4%9A/" title="Web 新手完整学习规划">Web 新手完整学习规划</a><time datetime="2026-10-20T23:16:07.000Z" title="发表于 2026-10-21 07:16:07">2026-10-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/20/ctf-SQL%E5%A8%89%E3%84%A5%E5%8F%86%E9%90%A7%E8%AF%B2%E7%B6%8D%E7%BC%81%E6%9B%A1%E7%B9%83%E6%A3%B0%E6%A8%BF%D0%92/" title="SQL 注入登录绕过题解">SQL 注入登录绕过题解</a><time datetime="2026-10-20T05:36:24.000Z" title="发表于 2026-10-20 13:36:24">2026-10-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/20/ctf-PHP%E9%97%86%E8%B7%BA%E7%86%80%E7%BA%AD%E2%82%AC%E9%96%AB%E7%86%B8%E5%9E%9A/" title="PHP 零基础速成（够做 Web 题）">PHP 零基础速成（够做 Web 题）</a><time datetime="2026-10-19T22:34:25.000Z" title="发表于 2026-10-20 06:34:25">2026-10-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/" title="PHP 文件包含题解 + CTF² 平台学习计划">PHP 文件包含题解 + CTF² 平台学习计划</a><time datetime="2026-10-19T21:50:16.000Z" title="发表于 2026-10-20 05:50:16">2026-10-20</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2026 By <a class="footer-bar-link" href="/" title="langkong1013" target="_blank">langkong1013</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">1</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://hexo.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/CTF/" style="font-size: 0.88rem;">CTF<sup>32</sup></a><a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 0.88rem;">Web安全<sup>32</sup></a><a href="/tags/%E5%A4%8D%E7%9B%98/" style="font-size: 0.88rem;">复盘<sup>32</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("04/01/2021 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2020 By 安知鱼 V1.7.0",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 langkong1013 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://cdn.cbd.int/qrcodejs@1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

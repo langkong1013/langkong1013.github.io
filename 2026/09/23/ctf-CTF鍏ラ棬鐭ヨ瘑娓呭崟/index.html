@@ -1,0 +1,889 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>CTF 入门知识清单（零基础详解版） | 浪空</title><meta name="keywords" content="CTF,复盘,Web安全"><meta name="author" content="langkong1013"><meta name="copyright" content="langkong1013"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="CTF 入门知识清单（零基础详解版）"><meta name="application-name" content="CTF 入门知识清单（零基础详解版）"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="CTF 入门知识清单（零基础详解版）"><meta property="og:url" content="http://langkong1013.github.io/2026/09/23/ctf-CTF%E9%8D%8F%E3%83%A9%E6%A3%AC%E9%90%AD%E3%83%A8%E7%98%91%E5%A8%93%E5%91%AD%E5%B4%9F/index.html"><meta property="og:site_name" content="浪空"><meta property="og:description" content="—— 把你做过的题，串成一张能查、能学、能复用的知识地图 来源：本清单整理自你已完成的题目（签到 &amp;#x2F; 摩尔斯 &amp;#x2F; ASCII &amp;#x2F; 倒过来 &amp;#x2F; 八进制 &amp;#x2F; 十六进制 &amp;#x2F; 大小写 &amp;#x2F; 写了两遍 &amp;#x2F; 二进制 &amp;#x2F; UR"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="http://langkong1013.github.io/img/furina-avatar.jpg"><meta property="article:author" content="langkong1013"><meta property="article:tag" content="CTF 学习笔记"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="http://langkong1013.github.io/img/furina-avatar.jpg"><meta name="description" content="—— 把你做过的题，串成一张能查、能学、能复用的知识地图 来源：本清单整理自你已完成的题目（签到 &amp;#x2F; 摩尔斯 &amp;#x2F; ASCII &amp;#x2F; 倒过来 &amp;#x2F; 八进制 &amp;#x2F; 十六进制 &amp;#x2F; 大小写 &amp;#x2F; 写了两遍 &amp;#x2F; 二进制 &amp;#x2F; UR"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://langkong1013.github.io/2026/09/23/ctf-CTF%E9%8D%8F%E3%83%A9%E6%A3%AC%E9%90%AD%E3%83%A8%E7%98%91%E5%A8%93%E5%91%AD%E5%B4%9F/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2024/07/27/125766904/ba62475f396df9de3316a08ed9e65d86_5680958632268053399..png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: undefined,
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: langkong1013","link":"链接: ","source":"来源: 浪空","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '浪空',
+  title: 'CTF 入门知识清单（零基础详解版）',
+  postAI: '',
+  pageFillDescription: '一、怎么用这份清单, 二、第一块：进制与基础编码, 2.1 十进制 ASCII：字符的编号, chr(102) -gt ‘f’   ；批量：拆开后逐个 chr 再拼起来, 2.2 八进制：以 8 为基, 2.3 十六进制：以 16 为基, 2.4 二进制：以 2 为基, 2.5 Base64：把二进制翻译成 64 个安全字符, 2.6 URL 编码：% 加两位十六进制, 2.7 Unicode 转义 x2F HTML 实体（补充）, 2.8 摩尔斯电码, 三、第二块：古典密码, 3.1 凯撒密码, 3.2 ROT13, 3.3 阿特巴什（Atbash）, 四、第三块：字符串变换（看形状就能猜）, 五、第四块：Linux 命令行基础（Bandit + 办公电脑的核心）, 5.1 浏览与读取文件, 5.2 查找文件与内容, 5.3 文本处理（读不到就用别的工具读）, 5.4 权限与身份（办公电脑那题的关键）, 5.5 网络、管道、通配符、压缩, 六、第五块：受限环境与曲线救国技巧（办公电脑）, 七、第六块：常用工具与平台, 八、命令行避坑指南（引号 · 空格 · 斜杠）, 8.1 铁律：命令与参数之间必须有空格, 8.2 参数含空格 x2F 括号 x2F 特殊符号时用引号包起来, 8.3 单引号 vs 双引号, 8.4 斜杠方向：Linux 用 x2F（正斜杠）不是 \, 8.5 相邻引号会自动合并, 8.6 一句话总结, 九、第七块：通用解题思维（比命令更重要）, 十、附录：编码转换一览（可直接复制）, 命令速查（Linux 常用）把你做过的题串成一张能查能学能复用的知识地图来源本清单整理自你已完成的题目签到摩尔斯倒过来八进制十六进制大小写写了两遍二进制编码凯撒密码阿特巴什办公电脑以及关一怎么用这份清单按块学编码进制古典密码字符串变换基础受限环境工具思维每个知识点都给了怎么认出它特征原理用什么命令方法对应你做的哪道题遇到新题先看特征去清单里对号入座再套解法二第一块进制与基础编码这一块的核心思路只有一句看清楚数据长什么样找到对应的逆操作把它变回人类可读的字符类型怎么认特征解法命令方法对应题十进制一堆普通数字如码八进制固定三位一组每位如八进制十六进制两位一组或带如十六进制二进制位一组的如二进制只含且常以结尾常考编码到处都是如编码转义形如实体形如摩尔斯电码由和及空格组成查表手写映射摩尔斯十进制字符的编号原理每个字符在计算机里都对应一个整数编号码识别一串普通数字两位数三位数范围和之间解法把每个数字当作编号反过来查出字符数字批量拆开后逐个再拼起来八进制以为基原理八进制只有逢进字符的编号转成八进制是识别一组固定三位每位不超过的数字最像八进制解法告诉按进制读这个数十六进制以为基原理十六进制用和两位十六进制一个字节位识别两位一组含或带前缀解法直接得到字节或还原二进制以为基原理只有位二进制一个字节正好覆盖一个字符识别位一组的前面常有前导别丢解法把二进制翻译成个安全字符原理用共个字符表示数据每字节个字符不足处用补齐识别只含大小写字母数字末尾可能有解法解码反向编码编码加两位十六进制原理里不能直接写空格中文等就用两位十六进制表示识别遍地通常就是解法整段解码转义实体补充转义这种用还原实体是网页里的用还原摩尔斯电码原理用点和划的组合表示字母数字字母之间空格单词之间更长间隔识别一串和解法查对照表逐段翻译注意本题里三第二块古典密码共同点只动字母数字下划线花括号都不动这是和编码最大的区别类型原理解法对应题凯撒密码每个字母平移固定的位枚举找含的那行凯撒密码平移位自逆阿特巴什字母表翻转自逆阿特巴什凯撒密码原理字母按固定位数平移密钥平移量如后移位为什么好破只有种可能全试一遍即可暴力枚举解法写个循环试输出里出现的就是答案原理凯撒的特例因为移两次移回到原样所以它自己就是自己的逆运算解法再移一次即还原或阿特巴什原理把字母表对折第个第个同样自逆做两次回到原样解法或用位置计算四第三块字符串变换看形状就能猜类型特征解法对应题倒序整段文字倒着读才通顺倒过来大小写错乱大小写被逐个反转大小写每字符写两遍每个字符重复出现两次取每隔一个写了两遍两串交错两段内容交替出现再拼是切片从头到尾步长等于把字符串倒过来表示每隔一个取正好把写了两遍的内容还原成一半五第四块命令行基础办公电脑的核心浏览与读取文件命令作用常用参数例子显示当前所在目录列出目录内容长格式含隐藏易读切换目录家目录上级当前把文件内容打印出来判断文件是什么类型看开头结尾若干行数字统计行数词数字符数只数行查找文件与内容命令作用关键参数例子按条件找文件名字类型大小属主执行按内容搜递归忽略大小写找某命令在哪的数字后面要带单位字节如不带单位是块文本处理读不到就用别的工具读命令作用例子把行排序去掉相邻重复行常配合从文件里提取可打印文字按列切分字符替换删除十六进制八进制转储可反解编解码解码权限与身份办公电脑那题的关键命令概念作用说明看我是谁显示组权限位看文件权限如表示仅属主可读改权限加读数字法改属主通常需管理员以管理员身份运行临时提权权限三组三开关属主属组其他人读写执行关键原理属主给自己的文件改权限不需要文件本身有权限所以哪怕文件是你也能网络管道通配符压缩命令符号作用例子远程登录另一台机器连接某端口收发数据发请求下载下载文件管道把前一条命令的输出当作后一条的输入重定向到文件覆盖追加把文件当输入通配符任意一个集合打包解包配合压缩解压解压通配符小技巧文件名看不清怕敲错时用代替如六第五块受限环境与曲线救国技巧办公电脑受限一个被裁剪过的很多命令被删除或禁用把上百个命令打包进一个文件的多合一工具箱很多命令只是它的符号链接以指定身份权限运行另一个程序用来借道调用被禁用的文件借用的读文件文件借用的加权限重要坑当里没有时报错是它说的是找不到命令不是文件不存在别被误导另一个坑想提权读文件若该环境不是真会此时改用属主七第六块常用工具与平台工具作用用法把平台的地址转成本地端口隧道连接转换出来的本地端口端口一行执行代码命令行版编解码工具见上文八命令行避坑指南引号空格斜杠这一节专门收集初学者最常犯又最难自己看出来的命令行错误统一格式错误写法报错原因正确写法铁律命令与参数之间必须有空格错误写法报错原因正确写法未找到命令和参数粘成了一个词成了不存在的命令管道后缺空格管道符后面也要有空格未找到命令命令与路径之间要有空格参数含空格括号特殊符号时用引号包起来报未预期的记号因为代码没被引号包住正确用双引号把整段代码包起来文件名含空格加引号或用反斜杠转义空格单引号双引号写法特点例子单引号里面内容全部当普通字符最安全原样输出双引号变量会被解释输出变量的值斜杠方向用正斜杠不是路径分隔符是反斜杠在里是转义符不是目录分隔符错误正确只有才用相邻引号会自动合并会被合并成一个参数给这类命令传两个集合时别写成相邻引号一句话总结命令和参数之间要空格有特殊符号就上引号路径用正斜杠两个参数别用相邻引号九第七块通用解题思维比命令更重要先看特征再对号入座数字位纯字母被平移每种特征对应一种解法逆操作思维题目怎么变的你就怎么反着来编码解码平移反向平移翻转再翻转暴力枚举可能空间小就直接全试凯撒种就地取材信息收集先看有什么找不到工具就用别的工具都能读文件从报错反推报错往往在告诉你哪个环节错了命令不存在权限不足路径不对留意第一个文件不少题会把线索或第一段放在里十附录编码转换一览可直接复制十进制字符八进制字符十六进制字符二进制字符十六进制串字节转义字符实体字符编码字符原文倒序每隔一个取还原写了两遍大小写互换大小写转换命令行命令速查常用递归搜内容找唯一行加读权限属主受限环境借道读文件',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-10-28 16:50:16',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 8.1.2"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://npm.elemecdn.com/anzhiyu-blog-static@1.0.4/img/avatar.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">浪空</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/CTF/" style="font-size: 1.05rem;">CTF<sup>32</sup></a><a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 1.05rem;">Web安全<sup>32</sup></a><a href="/tags/%E5%A4%8D%E7%9B%98/" style="font-size: 1.05rem;">复盘<sup>32</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/10/"><span class="card-archive-list-date">十月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">9</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/09/"><span class="card-archive-list-date">九月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">24</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF-%E9%94%99%E9%A2%98%E5%A4%8D%E7%9B%98/" itemprop="url">CTF 错题复盘</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/CTF/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>CTF</span></a><a class="article-meta__tags" href="/tags/%E5%A4%8D%E7%9B%98/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>复盘</span></a><a class="article-meta__tags" href="/tags/Web%E5%AE%89%E5%85%A8/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>Web安全</span></a></span></div></div><h1 class="post-title" itemprop="name headline">CTF 入门知识清单（零基础详解版）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2026-09-23T06:48:28.000Z" title="发表于 2026-09-23 14:48:28">2026-09-23</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2026-10-28T08:50:16.534Z" title="更新于 2026-10-28 16:50:16">2026-10-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为长沙"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>长沙</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src=""></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://langkong1013.github.io/2026/09/23/ctf-CTF%E9%8D%8F%E3%83%A9%E6%A3%AC%E9%90%AD%E3%83%A8%E7%98%91%E5%A8%93%E5%91%AD%E5%B4%9F/"><header><a class="post-meta-categories" href="/categories/CTF-%E9%94%99%E9%A2%98%E5%A4%8D%E7%9B%98/" itemprop="url">CTF 错题复盘</a><a href="/tags/CTF/" tabindex="-1" itemprop="url">CTF</a><a href="/tags/%E5%A4%8D%E7%9B%98/" tabindex="-1" itemprop="url">复盘</a><a href="/tags/Web%E5%AE%89%E5%85%A8/" tabindex="-1" itemprop="url">Web安全</a><h1 id="CrawlerTitle" itemprop="name headline">CTF 入门知识清单（零基础详解版）</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">langkong1013</span><time itemprop="dateCreated datePublished" datetime="2026-09-23T06:48:28.000Z" title="发表于 2026-09-23 14:48:28">2026-09-23</time><time itemprop="dateCreated datePublished" datetime="2026-10-28T08:50:16.534Z" title="更新于 2026-10-28 16:50:16">2026-10-28</time></header><p>—— 把你做过的题，串成一张能查、能学、能复用的知识地图</p>
+<p>来源：本清单整理自你已完成的题目（签到 &#x2F; 摩尔斯 &#x2F; ASCII &#x2F; 倒过来 &#x2F; 八进制 &#x2F; 十六进制 &#x2F; 大小写 &#x2F; 写了两遍 &#x2F; 二进制 &#x2F; URL编码 &#x2F; ROT13 &#x2F; 凯撒密码 &#x2F; 阿特巴什 &#x2F; 办公电脑）以及 OverTheWire Bandit 1–15 关。</p>
+<h2 id="一、怎么用这份清单"><a href="#一、怎么用这份清单" class="headerlink" title="一、怎么用这份清单"></a>一、怎么用这份清单</h2><ul>
+<li>按“块”学：编码&#x2F;进制 → 古典密码 → 字符串变换 → Linux 基础 → 受限环境 → 工具 → 思维。</li>
+<li>每个知识点都给了：① 怎么认出它（特征）② 原理 ③ 用什么命令&#x2F;方法 ④ 对应你做的哪道题。</li>
+<li>遇到新题：先看“特征”，去清单里对号入座，再套“解法”。</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="二、第一块：进制与基础编码"><a href="#二、第一块：进制与基础编码" class="headerlink" title="二、第一块：进制与基础编码"></a>二、第一块：进制与基础编码</h2><p>这一块的核心思路只有一句：看清楚数据长什么样，找到对应的“逆操作”把它变回人类可读的字符。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>怎么认（特征）</th>
+<th>解法（命令&#x2F;方法）</th>
+<th>对应题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>十进制 ASCII</td>
+<td>一堆普通数字，如 102 108 97 103</td>
+<td>python3 -c “print(‘’.join(chr(int(x)) for x in s.split()))”</td>
+<td>ASCII 码</td>
+</tr>
+<tr>
+<td>八进制</td>
+<td>固定三位一组、每位≤7，如 146 154</td>
+<td>chr(int(x, 8))</td>
+<td>八进制</td>
+</tr>
+<tr>
+<td>十六进制</td>
+<td>两位一组或带 0x，如 66 6c &#x2F; 0x66</td>
+<td>bytes.fromhex() &#x2F; xxd -r -p</td>
+<td>十六进制</td>
+</tr>
+<tr>
+<td>二进制</td>
+<td>8 位一组的 0&#x2F;1，如 01100110</td>
+<td>chr(int(x, 2))</td>
+<td>二进制</td>
+</tr>
+<tr>
+<td>Base64</td>
+<td>只含 A-Za-z0-9+&#x2F; 且常以 &#x3D; 结尾</td>
+<td>base64 -d</td>
+<td>（常考）</td>
+</tr>
+<tr>
+<td>URL 编码</td>
+<td>到处都是 %xx，如 %7B %7D</td>
+<td>urllib.parse.unquote</td>
+<td>URL 编码</td>
+</tr>
+<tr>
+<td>Unicode 转义</td>
+<td>形如 \u4f60\u597d</td>
+<td>.encode().decode(‘unicode_escape’)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>HTML 实体</td>
+<td>形如 &#123; &amp;</td>
+<td>html.unescape</td>
+<td>—</td>
+</tr>
+<tr>
+<td>摩尔斯电码</td>
+<td>由 . 和 - 及空格组成</td>
+<td>查表 &#x2F; 手写映射</td>
+<td>摩尔斯</td>
+</tr>
+</tbody></table>
+<h3 id="2-1-十进制-ASCII：字符的“编号”"><a href="#2-1-十进制-ASCII：字符的“编号”" class="headerlink" title="2.1 十进制 ASCII：字符的“编号”"></a>2.1 十进制 ASCII：字符的“编号”</h3><ul>
+<li>原理：每个字符在计算机里都对应一个整数编号（ASCII 码）。f&#x3D;102、l&#x3D;108、{&#x3D;123。</li>
+<li>识别：一串普通数字、两位数&#x2F;三位数、范围和 32–126 之间。</li>
+<li>解法：把每个数字当作编号，反过来查出字符——chr(数字)。</li>
+</ul>
+<h1 id="chr-102-‘f’-；批量：拆开后逐个-chr-再拼起来"><a href="#chr-102-‘f’-；批量：拆开后逐个-chr-再拼起来" class="headerlink" title="chr(102) -&gt; ‘f’   ；批量：拆开后逐个 chr 再拼起来"></a>chr(102) -&gt; ‘f’   ；批量：拆开后逐个 chr 再拼起来</h1><p>python3 -c “print(‘’.join(chr(int(x)) for x in ‘102 108’.split()))”   # -&gt; fl</p>
+<h3 id="2-2-八进制：以-8-为基"><a href="#2-2-八进制：以-8-为基" class="headerlink" title="2.2 八进制：以 8 为基"></a>2.2 八进制：以 8 为基</h3><ul>
+<li>原理：八进制只有 0–7，逢 8 进 1。字符 f 的编号 102，转成八进制是 146。</li>
+<li>识别：一组“固定三位、每位不超过 7”的数字，最像八进制。</li>
+<li>解法：chr(int(x, 8))——告诉 Python“按 8 进制读这个数”。</li>
+</ul>
+<p>python3 -c “print(chr(int(‘146’, 8)))”   # -&gt; f</p>
+<h3 id="2-3-十六进制：以-16-为基"><a href="#2-3-十六进制：以-16-为基" class="headerlink" title="2.3 十六进制：以 16 为基"></a>2.3 十六进制：以 16 为基</h3><ul>
+<li>原理：十六进制用 0-9 和 a-f；两位十六进制 &#x3D; 一个字节（8 位）。f&#x3D;0x66。</li>
+<li>识别：两位一组、含 a-f，或带 0x 前缀。</li>
+<li>解法：bytes.fromhex(“66 6c”) 直接得到字节；或 xxd -r -p 还原。</li>
+</ul>
+<p>python3 -c “print(bytes.fromhex(‘666c’)).decode()”   # -&gt; fl<br>echo ‘666c’ | xxd -r -p                             # -&gt; fl</p>
+<h3 id="2-4-二进制：以-2-为基"><a href="#2-4-二进制：以-2-为基" class="headerlink" title="2.4 二进制：以 2 为基"></a>2.4 二进制：以 2 为基</h3><ul>
+<li>原理：只有 0&#x2F;1；8 位二进制 &#x3D; 一个字节，正好覆盖一个 ASCII 字符。</li>
+<li>识别：8 位一组的 0&#x2F;1（前面常有前导 0，别丢）。</li>
+<li>解法：chr(int(x, 2))。</li>
+</ul>
+<p>python3 -c “print(‘’.join(chr(int(x,2)) for x in ‘01100110 01101100’.split()))”   # -&gt; fl</p>
+<h3 id="2-5-Base64：把二进制“翻译”成-64-个安全字符"><a href="#2-5-Base64：把二进制“翻译”成-64-个安全字符" class="headerlink" title="2.5 Base64：把二进制“翻译”成 64 个安全字符"></a>2.5 Base64：把二进制“翻译”成 64 个安全字符</h3><ul>
+<li>原理：用 A-Za-z0-9+&#x2F; 共 64 个字符表示数据；每 3 字节 → 4 个字符，不足处用 &#x3D; 补齐。</li>
+<li>识别：只含大小写字母、数字、+、&#x2F;，末尾可能有 &#x3D;。</li>
+<li>解法：base64 -d（d&#x3D;decode 解码）。</li>
+</ul>
+<p>echo ‘ZmxhZw&#x3D;&#x3D;’ | base64 -d        # -&gt; flag<br>echo -n ‘flag’ | base64             # 反向：编码 -&gt; ZmxhZw&#x3D;&#x3D;</p>
+<h3 id="2-6-URL-编码：-加两位十六进制"><a href="#2-6-URL-编码：-加两位十六进制" class="headerlink" title="2.6 URL 编码：% 加两位十六进制"></a>2.6 URL 编码：% 加两位十六进制</h3><ul>
+<li>原理：URL 里不能直接写空格、中文、{} 等，就用 %+两位十六进制表示。{&#x3D;0x7B→%7B。</li>
+<li>识别：遍地 %xx；%7B&#x2F;%7D 通常就是 { }。</li>
+<li>解法：urllib.parse.unquote 整段解码。</li>
+</ul>
+<p>python3 -c “import urllib.parse; print(urllib.parse.unquote(‘%66%6c%61%67%7b%7d’))”</p>
+<h3 id="2-7-Unicode-转义-HTML-实体（补充）"><a href="#2-7-Unicode-转义-HTML-实体（补充）" class="headerlink" title="2.7 Unicode 转义 &#x2F; HTML 实体（补充）"></a>2.7 Unicode 转义 &#x2F; HTML 实体（补充）</h3><ul>
+<li>Unicode 转义：\u4f60\u597d 这种，用 .encode().decode(“unicode_escape”) 还原。</li>
+<li>HTML 实体：&#123; 是 {、（网页里的 &amp;）用 html.unescape 还原。</li>
+</ul>
+<h3 id="2-8-摩尔斯电码"><a href="#2-8-摩尔斯电码" class="headerlink" title="2.8 摩尔斯电码"></a>2.8 摩尔斯电码</h3><ul>
+<li>原理：用“点 .”和“划 -”的组合表示字母&#x2F;数字，字母之间空格、单词之间更长间隔。</li>
+<li>识别：一串 . 和 -。</li>
+<li>解法：查对照表逐段翻译（注意本题里 }&#x3D;-.-.  {&#x3D;.-…  _&#x3D;..–.-）。</li>
+</ul>
+<h2 id="三、第二块：古典密码"><a href="#三、第二块：古典密码" class="headerlink" title="三、第二块：古典密码"></a>三、第二块：古典密码</h2><p>共同点：只动“字母”，数字、下划线、花括号都不动——这是和“编码”最大的区别。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>原理</th>
+<th>解法</th>
+<th>对应题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>凯撒密码</td>
+<td>每个字母平移固定的 N 位</td>
+<td>枚举 N&#x3D;1..25，找含 flag 的那行</td>
+<td>凯撒密码</td>
+</tr>
+<tr>
+<td>ROT13</td>
+<td>平移 13 位（自逆）</td>
+<td>tr ‘A-Za-z’ ‘N-ZA-Mn-za-m’</td>
+<td>ROT13</td>
+</tr>
+<tr>
+<td>阿特巴什</td>
+<td>字母表翻转（自逆）</td>
+<td>tr a..z z..a</td>
+<td>阿特巴什</td>
+</tr>
+</tbody></table>
+<h3 id="3-1-凯撒密码"><a href="#3-1-凯撒密码" class="headerlink" title="3.1 凯撒密码"></a>3.1 凯撒密码</h3><ul>
+<li>原理：字母按固定位数平移（密钥 &#x3D; 平移量 N）。如后移 3 位：a→d、z→c。</li>
+<li>为什么好破：只有 25 种可能，全试一遍即可（暴力枚举）。</li>
+<li>解法：写个循环试 N&#x3D;1..25，输出里出现 flag 的就是答案。</li>
+</ul>
+<h3 id="3-2-ROT13"><a href="#3-2-ROT13" class="headerlink" title="3.2 ROT13"></a>3.2 ROT13</h3><ul>
+<li>原理：凯撒的特例，N&#x3D;13。因为 26÷2&#x3D;13，移两次&#x3D;移 26&#x3D;回到原样，所以它“自己就是自己的逆运算”。</li>
+<li>解法：再移一次即还原；tr 或 codecs.decode(s, “rot13”)。</li>
+</ul>
+<h3 id="3-3-阿特巴什（Atbash）"><a href="#3-3-阿特巴什（Atbash）" class="headerlink" title="3.3 阿特巴什（Atbash）"></a>3.3 阿特巴什（Atbash）</h3><ul>
+<li>原理：把字母表对折——第 1 个↔第 26 个（a↔z、b↔y…m↔n）。</li>
+<li>同样自逆：做两次回到原样。</li>
+<li>解法：tr a..z z..a，或用位置 25−i 计算。</li>
+</ul>
+<h2 id="四、第三块：字符串变换（看“形状”就能猜）"><a href="#四、第三块：字符串变换（看“形状”就能猜）" class="headerlink" title="四、第三块：字符串变换（看“形状”就能猜）"></a>四、第三块：字符串变换（看“形状”就能猜）</h2><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>特征</th>
+<th>解法</th>
+<th>对应题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>倒序</td>
+<td>整段文字倒着读才通顺</td>
+<td>rev &#x2F; s[::-1]</td>
+<td>倒过来</td>
+</tr>
+<tr>
+<td>大小写错乱</td>
+<td>大小写被逐个反转（fLaG）</td>
+<td>swapcase() &#x2F; tr</td>
+<td>大小写</td>
+</tr>
+<tr>
+<td>每字符写两遍</td>
+<td>每个字符重复出现两次</td>
+<td>s[::2] 取每隔一个</td>
+<td>写了两遍</td>
+</tr>
+<tr>
+<td>两串交错</td>
+<td>两段内容交替出现</td>
+<td>s[::2] + s[1::2] 再拼</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<ul>
+<li>s[::-1] 是 Python 切片：从头到尾、步长 -1，等于把字符串倒过来。</li>
+<li>s[::2] 表示“每隔一个取”，正好把“写了两遍”的内容还原成一半。</li>
+</ul>
+<h2 id="五、第四块：Linux-命令行基础（Bandit-办公电脑的核心）"><a href="#五、第四块：Linux-命令行基础（Bandit-办公电脑的核心）" class="headerlink" title="五、第四块：Linux 命令行基础（Bandit + 办公电脑的核心）"></a>五、第四块：Linux 命令行基础（Bandit + 办公电脑的核心）</h2><h3 id="5-1-浏览与读取文件"><a href="#5-1-浏览与读取文件" class="headerlink" title="5.1 浏览与读取文件"></a>5.1 浏览与读取文件</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+<th>常用参数</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pwd</td>
+<td>显示当前所在目录</td>
+<td>—</td>
+<td>pwd</td>
+</tr>
+<tr>
+<td>ls</td>
+<td>列出目录内容</td>
+<td>-l 长格式 &#x2F; -a 含隐藏 &#x2F; -h 易读</td>
+<td>ls -la</td>
+</tr>
+<tr>
+<td>cd</td>
+<td>切换目录</td>
+<td>~ 家目录 &#x2F; .. 上级 &#x2F; . 当前</td>
+<td>cd &#x2F;tmp</td>
+</tr>
+<tr>
+<td>cat</td>
+<td>把文件内容打印出来</td>
+<td>—</td>
+<td>cat README</td>
+</tr>
+<tr>
+<td>file</td>
+<td>判断文件是什么类型</td>
+<td>—</td>
+<td>file a.bin</td>
+</tr>
+<tr>
+<td>head &#x2F; tail</td>
+<td>看开头 &#x2F; 结尾若干行</td>
+<td>-n 数字</td>
+<td>head -n 5 f</td>
+</tr>
+<tr>
+<td>wc</td>
+<td>统计行数&#x2F;词数&#x2F;字符数</td>
+<td>-l 只数行</td>
+<td>wc -l f</td>
+</tr>
+</tbody></table>
+<h3 id="5-2-查找文件与内容"><a href="#5-2-查找文件与内容" class="headerlink" title="5.2 查找文件与内容"></a>5.2 查找文件与内容</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+<th>关键参数</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>find</td>
+<td>按条件找文件</td>
+<td>-name 名字 &#x2F; -type 类型 &#x2F; -size 大小 &#x2F; -user 属主 &#x2F; -exec 执行</td>
+<td>find &#x2F; -size 33c</td>
+</tr>
+<tr>
+<td>grep</td>
+<td>按“内容”搜</td>
+<td>-r 递归 &#x2F; -i 忽略大小写</td>
+<td>grep -r “flag” .</td>
+</tr>
+<tr>
+<td>which</td>
+<td>找某命令在哪</td>
+<td>—</td>
+<td>which python3</td>
+</tr>
+</tbody></table>
+<ul>
+<li>find 的 -size 数字后面要带单位：c&#x3D;字节（如 33c）；不带单位是“块”。</li>
+</ul>
+<h3 id="5-3-文本处理（“读不到就用别的工具读”）"><a href="#5-3-文本处理（“读不到就用别的工具读”）" class="headerlink" title="5.3 文本处理（“读不到就用别的工具读”）"></a>5.3 文本处理（“读不到就用别的工具读”）</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sort</td>
+<td>把行排序</td>
+<td>sort f</td>
+</tr>
+<tr>
+<td>uniq</td>
+<td>去掉相邻重复行（常配合 sort）</td>
+<td>sort f | uniq -u</td>
+</tr>
+<tr>
+<td>strings</td>
+<td>从文件里提取可打印文字</td>
+<td>strings f | grep flag</td>
+</tr>
+<tr>
+<td>cut</td>
+<td>按列切分</td>
+<td>cut -d: -f1</td>
+</tr>
+<tr>
+<td>tr</td>
+<td>字符替换&#x2F;删除</td>
+<td>tr a-z A-Z</td>
+</tr>
+<tr>
+<td>xxd &#x2F; od</td>
+<td>十六进制&#x2F;八进制转储（-r 可反解）</td>
+<td>xxd -r -p f</td>
+</tr>
+<tr>
+<td>base64</td>
+<td>Base64 编解码（-d 解码）</td>
+<td>base64 -d f</td>
+</tr>
+</tbody></table>
+<h3 id="5-4-权限与身份（办公电脑那题的关键）"><a href="#5-4-权限与身份（办公电脑那题的关键）" class="headerlink" title="5.4 权限与身份（办公电脑那题的关键）"></a>5.4 权限与身份（办公电脑那题的关键）</h3><table>
+<thead>
+<tr>
+<th>命令&#x2F;概念</th>
+<th>作用</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>whoami &#x2F; id</td>
+<td>看“我是谁”</td>
+<td>id 显示 uid、组</td>
+</tr>
+<tr>
+<td>ls -l 权限位</td>
+<td>看文件权限</td>
+<td>如 -r——– 表示仅属主可读</td>
+</tr>
+<tr>
+<td>chmod</td>
+<td>改权限</td>
+<td>+r 加读；644&#x2F;755 数字法</td>
+</tr>
+<tr>
+<td>chown</td>
+<td>改属主</td>
+<td>通常需管理员</td>
+</tr>
+<tr>
+<td>sudo</td>
+<td>以管理员身份运行</td>
+<td>临时提权</td>
+</tr>
+</tbody></table>
+<ul>
+<li>权限三组三开关：属主(u)&#x2F;属组(g)&#x2F;其他人(o) × 读(r)&#x2F;写(w)&#x2F;执行(x)。</li>
+<li>关键原理：<strong>属主给自己的文件改权限，不需要文件本身有权限</strong>——所以哪怕文件是 ———-，你也能 chmod +r。</li>
+</ul>
+<h3 id="5-5-网络、管道、通配符、压缩"><a href="#5-5-网络、管道、通配符、压缩" class="headerlink" title="5.5 网络、管道、通配符、压缩"></a>5.5 网络、管道、通配符、压缩</h3><table>
+<thead>
+<tr>
+<th>命令&#x2F;符号</th>
+<th>作用</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ssh</td>
+<td>远程登录另一台机器</td>
+<td>ssh user@host -p 2220</td>
+</tr>
+<tr>
+<td>nc (netcat)</td>
+<td>连接某 IP:端口，收发数据</td>
+<td>nc 127.0.0.1 37591</td>
+</tr>
+<tr>
+<td>curl</td>
+<td>发 HTTP 请求 &#x2F; 下载</td>
+<td>curl -s URL -o f</td>
+</tr>
+<tr>
+<td>wget</td>
+<td>下载文件</td>
+<td>wget URL</td>
+</tr>
+<tr>
+<td>| 管道</td>
+<td>把前一条命令的输出，当作后一条的输入</td>
+<td>cat f | grep flag</td>
+</tr>
+<tr>
+<td>&gt; &#x2F; &gt;&gt;</td>
+<td>重定向到文件（覆盖 &#x2F; 追加）</td>
+<td>echo x &gt; f</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>把文件当输入</td>
+<td>cmd &lt; f</td>
+</tr>
+<tr>
+<td>* ? []</td>
+<td>通配符：任意 &#x2F; 一个 &#x2F; 集合</td>
+<td>ls *.txt</td>
+</tr>
+<tr>
+<td>tar</td>
+<td>打包&#x2F;解包（-z 配合 gzip）</td>
+<td>tar xf a.tar.gz</td>
+</tr>
+<tr>
+<td>gzip</td>
+<td>压缩&#x2F;解压（-d 解压）</td>
+<td>gzip -d a.gz</td>
+</tr>
+</tbody></table>
+<ul>
+<li>通配符小技巧：文件名看不清&#x2F;怕敲错时，用 * 代替（如 cat README*）。</li>
+</ul>
+<h2 id="六、第五块：受限环境与“曲线救国”技巧（办公电脑）"><a href="#六、第五块：受限环境与“曲线救国”技巧（办公电脑）" class="headerlink" title="六、第五块：受限环境与“曲线救国”技巧（办公电脑）"></a>六、第五块：受限环境与“曲线救国”技巧（办公电脑）</h2><ul>
+<li>受限 shell（jail）：一个被裁剪过的 shell，很多命令被删除或禁用。</li>
+<li>busybox：把上百个命令打包进“一个”文件的“多合一工具箱”；很多命令只是它的符号链接。</li>
+<li>setpriv：以指定身份&#x2F;权限运行另一个程序——用来“借道”调用被禁用的 busybox：</li>
+</ul>
+<p>setpriv busybox cat &lt;文件&gt;        # 借用 busybox 的 cat 读文件<br>setpriv busybox chmod +r &lt;文件&gt;    # 借用 busybox 的 chmod 加权限</p>
+<ul>
+<li>重要坑：当 shell 里没有 cat 时，报错是 “No such file or directory”——它说的是“找不到 cat 命令”，不是“文件不存在”。别被误导。</li>
+<li>另一个坑：setpriv –nnp 想提权读文件，若该环境 uid 0 不是真 root，会 Permission denied——此时改用“属主 chmod”。</li>
+</ul>
+<h2 id="七、第六块：常用工具与平台"><a href="#七、第六块：常用工具与平台" class="headerlink" title="七、第六块：常用工具与平台"></a>七、第六块：常用工具与平台</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>作用</th>
+<th>用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>wsrx</td>
+<td>把平台的 wss:&#x2F;&#x2F; 地址转成本地端口（隧道）</td>
+<td>.&#x2F;wsrx connect ‘wss:&#x2F;&#x2F;…’</td>
+</tr>
+<tr>
+<td>nc</td>
+<td>连接转换出来的本地端口</td>
+<td>nc 127.0.0.1 端口</td>
+</tr>
+<tr>
+<td>python3 -c</td>
+<td>一行执行 Python 代码</td>
+<td>python3 -c “…”</td>
+</tr>
+<tr>
+<td>xxd &#x2F; base64 &#x2F; tr</td>
+<td>命令行版编解码工具</td>
+<td>见上文</td>
+</tr>
+</tbody></table>
+<h2 id="八、命令行避坑指南（引号-·-空格-·-斜杠）"><a href="#八、命令行避坑指南（引号-·-空格-·-斜杠）" class="headerlink" title="八、命令行避坑指南（引号 · 空格 · 斜杠）"></a>八、命令行避坑指南（引号 · 空格 · 斜杠）</h2><p>这一节专门收集初学者最常犯、又最难自己看出来的命令行错误。统一格式：❌ 错误写法 → 报错 → 原因 → ✅ 正确写法。</p>
+<h3 id="8-1-铁律：命令与参数之间必须有空格"><a href="#8-1-铁律：命令与参数之间必须有空格" class="headerlink" title="8.1 铁律：命令与参数之间必须有空格"></a>8.1 铁律：命令与参数之间必须有空格</h3><table>
+<thead>
+<tr>
+<th>❌ 错误写法</th>
+<th>报错</th>
+<th>原因</th>
+<th>✅ 正确写法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tr’abc’ ‘def’</td>
+<td>未找到命令 trabc…</td>
+<td>tr 和参数粘成了一个词，成了不存在的命令</td>
+<td>tr ‘abc’ ‘def’</td>
+</tr>
+<tr>
+<td>… |tr ‘a’ ‘b’</td>
+<td>管道后缺空格</td>
+<td>管道符 | 后面也要有空格</td>
+<td>… | tr ‘a’ ‘b’</td>
+</tr>
+<tr>
+<td>cd&#x2F;etc</td>
+<td>未找到命令 cd&#x2F;etc</td>
+<td>命令与路径之间要有空格</td>
+<td>cd &#x2F;etc</td>
+</tr>
+</tbody></table>
+<h3 id="8-2-参数含空格-括号-特殊符号时，用引号包起来"><a href="#8-2-参数含空格-括号-特殊符号时，用引号包起来" class="headerlink" title="8.2 参数含空格 &#x2F; 括号 &#x2F; 特殊符号时，用引号包起来"></a>8.2 参数含空格 &#x2F; 括号 &#x2F; 特殊符号时，用引号包起来</h3><ul>
+<li>python3 -c print(‘x’)  → bash 报“未预期的记号 (”——因为代码没被引号包住。</li>
+<li>正确：python3 -c “print(‘x’)”（用双引号把整段代码包起来）。</li>
+<li>文件名含空格：cat ‘my file.txt’（加引号），或 cat my\ file.txt（用反斜杠转义空格）。</li>
+</ul>
+<h3 id="8-3-单引号-vs-双引号"><a href="#8-3-单引号-vs-双引号" class="headerlink" title="8.3 单引号 vs 双引号"></a>8.3 单引号 vs 双引号</h3><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>特点</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>‘ 单引号 ‘</td>
+<td>里面内容全部当普通字符（最安全）</td>
+<td>echo ‘$PATH’ → 原样输出 $PATH</td>
+</tr>
+<tr>
+<td>“ 双引号 “</td>
+<td>$变量、\ 会被 shell 解释</td>
+<td>echo “$PATH” → 输出变量的值</td>
+</tr>
+</tbody></table>
+<h3 id="8-4-斜杠方向：Linux-用-（正斜杠），不是"><a href="#8-4-斜杠方向：Linux-用-（正斜杠），不是" class="headerlink" title="8.4 斜杠方向：Linux 用 &#x2F;（正斜杠），不是 \"></a>8.4 斜杠方向：Linux 用 &#x2F;（正斜杠），不是 \</h3><ul>
+<li>路径分隔符是 &#x2F;；反斜杠 \ 在 Linux 里是“转义符”，不是目录分隔符。</li>
+<li>错误：ls \bin ；正确：ls &#x2F;bin 。（只有 Windows 才用 \）</li>
+</ul>
+<h3 id="8-5-相邻引号会自动合并"><a href="#8-5-相邻引号会自动合并" class="headerlink" title="8.5 相邻引号会自动合并"></a>8.5 相邻引号会自动合并</h3><ul>
+<li>‘abc’’def’ 会被 shell 合并成一个参数 abcdef —— 给 tr 这类命令传两个集合时，别写成相邻引号。</li>
+</ul>
+<h3 id="8-6-一句话总结"><a href="#8-6-一句话总结" class="headerlink" title="8.6 一句话总结"></a>8.6 一句话总结</h3><ul>
+<li>命令和参数之间要空格；有特殊符号就上引号；路径用正斜杠 &#x2F;；两个参数别用相邻引号。</li>
+</ul>
+<h2 id="九、第七块：通用解题思维（比命令更重要）"><a href="#九、第七块：通用解题思维（比命令更重要）" class="headerlink" title="九、第七块：通用解题思维（比命令更重要）"></a>九、第七块：通用解题思维（比命令更重要）</h2><ul>
+<li>先看特征、再对号入座：数字？%xx？8位0&#x2F;1？纯字母被平移？——每种特征对应一种解法。</li>
+<li>逆操作思维：题目怎么变的，你就怎么反着来（编码↔解码、平移↔反向平移、翻转↔再翻转）。</li>
+<li>暴力枚举：可能空间小就直接全试（凯撒 25 种）。</li>
+<li>就地取材 + 信息收集：先 ls 看有什么；找不到工具就用别的工具（strings&#x2F;tar&#x2F;shuf 都能“读”文件）。</li>
+<li>从报错反推：报错往往在告诉你“哪个环节错了”（命令不存在 &#x2F; 权限不足 &#x2F; 路径不对）。</li>
+<li>留意“第一个文件&#x2F;README”：不少题会把线索或第一段 flag 放在 README 里。</li>
+</ul>
+<h2 id="十、附录：编码转换一览（可直接复制）"><a href="#十、附录：编码转换一览（可直接复制）" class="headerlink" title="十、附录：编码转换一览（可直接复制）"></a>十、附录：编码转换一览（可直接复制）</h2><p>chr(int(x))            # 十进制 -&gt; 字符<br>chr(int(x, 8))         # 八进制 -&gt; 字符<br>chr(int(x, 16))        # 十六进制 -&gt; 字符<br>chr(int(x, 2))         # 二进制 -&gt; 字符<br>bytes.fromhex(s)       # 十六进制串 -&gt; 字节<br>s.encode().decode(‘unicode_escape’)   # \u 转义 -&gt; 字符<br>html.unescape(s)       # HTML 实体 -&gt; 字符<br>urllib.parse.unquote(s)# URL 编码 -&gt; 字符<br>base64 -d              # Base64 -&gt; 原文<br>s[::-1] &#x2F; rev          # 倒序<br>s[::2]                 # 每隔一个取（还原“写了两遍”）<br>swapcase()             # 大小写互换<br>codecs.decode(s,’rot13’)   # ROT13<br>tr ‘a-z’ ‘A-Z’         # 大小写转换（命令行）</p>
+<h3 id="命令速查（Linux-常用）"><a href="#命令速查（Linux-常用）" class="headerlink" title="命令速查（Linux 常用）"></a>命令速查（Linux 常用）</h3><p>ls -la &#x2F; pwd &#x2F; cd &#x2F; cat &#x2F; file &#x2F; head &#x2F; tail &#x2F; wc<br>find &#x2F; -name “<em>flag</em>“ 2&gt;&#x2F;dev&#x2F;null<br>grep -r “flag” .        # 递归搜内容<br>sort f | uniq -u        # 找唯一行<br>strings f | grep -i flag<br>chmod +r f              # 加读权限（属主）<br>setpriv busybox cat f   # 受限环境借道读文件</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/furina-avatar.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/furina-avatar.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">langkong1013</div><div class="post-copyright__author_desc">记录学习与踩坑</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://langkong1013.github.io/2026/09/23/ctf-CTF%E9%8D%8F%E3%83%A9%E6%A3%AC%E9%90%AD%E3%83%A8%E7%98%91%E5%A8%93%E5%91%AD%E5%B4%9F/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://langkong1013.github.io/2026/09/23/ctf-CTF%E9%8D%8F%E3%83%A9%E6%A3%AC%E9%90%AD%E3%83%A8%E7%98%91%E5%A8%93%E5%91%AD%E5%B4%9F/')">CTF 入门知识清单（零基础详解版）</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://langkong1013.github.io/2026/09/23/ctf-CTF%E9%8D%8F%E3%83%A9%E6%A3%AC%E9%90%AD%E3%83%A8%E7%98%91%E5%A8%93%E5%91%AD%E5%B4%9F/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=CTF 入门知识清单（零基础详解版）&amp;url=http://langkong1013.github.io/2026/09/23/ctf-CTF%E9%8D%8F%E3%83%A9%E6%A3%AC%E9%90%AD%E3%83%A8%E7%98%91%E5%A8%93%E5%91%AD%E5%B4%9F/&amp;pic=" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://langkong1013.github.io" target="_blank">浪空</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/CTF/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>CTF<span class="tagsPageCount">32</span></a><a class="post-meta__box__tags" href="/tags/%E5%A4%8D%E7%9B%98/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>复盘<span class="tagsPageCount">32</span></a><a class="post-meta__box__tags" href="/tags/Web%E5%AE%89%E5%85%A8/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>Web安全<span class="tagsPageCount">32</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="/img/furina-avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2026/09/22/ctf-%E6%B5%9C%E5%B2%83%E7%B9%98%E9%8D%92%E8%B7%BA%E7%95%AC%E9%8F%81%E6%9D%91%EE%98%B2%E9%90%A9%E6%A8%B9%E7%AC%8C%E9%8E%BF%E5%B6%84%E7%B6%94%E9%8E%B5%E5%AC%AA%E5%94%BD/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">【基础】二进制</div></div></a></div><div class="next-post pull-right"><a href="/2026/09/24/ctf-%E9%8A%86%E6%84%AC%E7%86%80%E7%BA%AD%E2%82%AC%E9%8A%86%E6%88%9D%E6%B5%98%E9%90%97%E5%9B%AC%E5%99%B7%E9%90%A8%E5%8B%AC%E6%95%9E%E9%96%B2%E5%A9%82%E7%95%AC%E9%8F%81%E6%9D%91%EE%98%B2%E9%90%A9%E6%A8%B9%E7%AC%8C%E9%8E%BF%E5%B6%84%E7%B6%94%E9%8E%B5%E5%AC%AA%E5%94%BD/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">【基础】图片里的注释</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2026/09/22/ctf-ASCII%E9%90%AE%E4%BD%B8%E7%95%AC%E9%8F%81%E6%9D%91%EE%98%B2%E9%90%A9%E6%A8%B9%E7%AC%8C%E9%8E%BF%E5%B6%84%E7%B6%94%E9%8E%B5%E5%AC%AA%E5%94%BD/" title="【基础】ASCII 码"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-09-22</div><div class="title">【基础】ASCII 码</div></div></a></div><div><a href="/2026/10/13/ctf-2026%E7%BB%80%E6%83%A7%E6%B4%9F%E9%8E%B7%E6%B6%99%E6%9F%8A%E7%92%A7%E6%B6%A2%EE%95%BD%E7%91%99%EF%BC%A2%E9%94%8B%E6%9F%8A%E9%8E%B5%E5%AC%AD%EE%87%9B%E7%91%99%EF%BD%87%E5%A2%97/" title="2026 社团招新赛题解 · 新手详解版"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-13</div><div class="title">2026 社团招新赛题解 · 新手详解版</div></div></a></div><div><a href="/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/" title="PHP 文件包含题解 + CTF² 平台学习计划"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-20</div><div class="title">PHP 文件包含题解 + CTF² 平台学习计划</div></div></a></div><div><a href="/2026/10/20/ctf-SQL%E5%A8%89%E3%84%A5%E5%8F%86%E9%90%A7%E8%AF%B2%E7%B6%8D%E7%BC%81%E6%9B%A1%E7%B9%83%E6%A3%B0%E6%A8%BF%D0%92/" title="SQL 注入登录绕过题解"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-20</div><div class="title">SQL 注入登录绕过题解</div></div></a></div><div><a href="/2026/10/20/ctf-GitHub%E9%8E%BB%E6%80%ADR%E7%80%B9%E5%B1%BE%E6%9A%A3%E7%80%B9%E7%82%B4%E6%90%B7%E9%8E%B5%E5%AC%AA%E5%94%BD/" title="GitHub 提 PR 完整实操手册"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-20</div><div class="title">GitHub 提 PR 完整实操手册</div></div></a></div><div><a href="/2026/09/21/ctf-Bandit1-15%E9%8D%8F%E7%9F%BBinux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8E%BF%E5%B6%84%E7%B6%94%E7%92%87%EF%B9%81%D0%92/" title="Bandit 1–15 关 Linux 基础操作详解"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-09-21</div><div class="title">Bandit 1–15 关 Linux 基础操作详解</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/furina-avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">网安</div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://bu.dusays.com/2023/05/13/645fa415e8694.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%80%8E%E4%B9%88%E7%94%A8%E8%BF%99%E4%BB%BD%E6%B8%85%E5%8D%95"><span class="toc-number">1.</span> <span class="toc-text">一、怎么用这份清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%AC%AC%E4%B8%80%E5%9D%97%EF%BC%9A%E8%BF%9B%E5%88%B6%E4%B8%8E%E5%9F%BA%E7%A1%80%E7%BC%96%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">二、第一块：进制与基础编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%8D%81%E8%BF%9B%E5%88%B6-ASCII%EF%BC%9A%E5%AD%97%E7%AC%A6%E7%9A%84%E2%80%9C%E7%BC%96%E5%8F%B7%E2%80%9D"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 十进制 ASCII：字符的“编号”</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#chr-102-%E2%80%98f%E2%80%99-%EF%BC%9B%E6%89%B9%E9%87%8F%EF%BC%9A%E6%8B%86%E5%BC%80%E5%90%8E%E9%80%90%E4%B8%AA-chr-%E5%86%8D%E6%8B%BC%E8%B5%B7%E6%9D%A5"><span class="toc-number">3.</span> <span class="toc-text">chr(102) -&gt; ‘f’   ；批量：拆开后逐个 chr 再拼起来</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%85%AB%E8%BF%9B%E5%88%B6%EF%BC%9A%E4%BB%A5-8-%E4%B8%BA%E5%9F%BA"><span class="toc-number">3.1.</span> <span class="toc-text">2.2 八进制：以 8 为基</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%EF%BC%9A%E4%BB%A5-16-%E4%B8%BA%E5%9F%BA"><span class="toc-number">3.2.</span> <span class="toc-text">2.3 十六进制：以 16 为基</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E4%BA%8C%E8%BF%9B%E5%88%B6%EF%BC%9A%E4%BB%A5-2-%E4%B8%BA%E5%9F%BA"><span class="toc-number">3.3.</span> <span class="toc-text">2.4 二进制：以 2 为基</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-Base64%EF%BC%9A%E6%8A%8A%E4%BA%8C%E8%BF%9B%E5%88%B6%E2%80%9C%E7%BF%BB%E8%AF%91%E2%80%9D%E6%88%90-64-%E4%B8%AA%E5%AE%89%E5%85%A8%E5%AD%97%E7%AC%A6"><span class="toc-number">3.4.</span> <span class="toc-text">2.5 Base64：把二进制“翻译”成 64 个安全字符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-URL-%E7%BC%96%E7%A0%81%EF%BC%9A-%E5%8A%A0%E4%B8%A4%E4%BD%8D%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6"><span class="toc-number">3.5.</span> <span class="toc-text">2.6 URL 编码：% 加两位十六进制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-Unicode-%E8%BD%AC%E4%B9%89-HTML-%E5%AE%9E%E4%BD%93%EF%BC%88%E8%A1%A5%E5%85%85%EF%BC%89"><span class="toc-number">3.6.</span> <span class="toc-text">2.7 Unicode 转义 &#x2F; HTML 实体（补充）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-8-%E6%91%A9%E5%B0%94%E6%96%AF%E7%94%B5%E7%A0%81"><span class="toc-number">3.7.</span> <span class="toc-text">2.8 摩尔斯电码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E7%AC%AC%E4%BA%8C%E5%9D%97%EF%BC%9A%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81"><span class="toc-number">3.8.</span> <span class="toc-text">三、第二块：古典密码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81"><span class="toc-number">3.8.1.</span> <span class="toc-text">3.1 凯撒密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-ROT13"><span class="toc-number">3.8.2.</span> <span class="toc-text">3.2 ROT13</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E9%98%BF%E7%89%B9%E5%B7%B4%E4%BB%80%EF%BC%88Atbash%EF%BC%89"><span class="toc-number">3.8.3.</span> <span class="toc-text">3.3 阿特巴什（Atbash）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%AC%AC%E4%B8%89%E5%9D%97%EF%BC%9A%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%98%E6%8D%A2%EF%BC%88%E7%9C%8B%E2%80%9C%E5%BD%A2%E7%8A%B6%E2%80%9D%E5%B0%B1%E8%83%BD%E7%8C%9C%EF%BC%89"><span class="toc-number">3.9.</span> <span class="toc-text">四、第三块：字符串变换（看“形状”就能猜）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E7%AC%AC%E5%9B%9B%E5%9D%97%EF%BC%9ALinux-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%9F%BA%E7%A1%80%EF%BC%88Bandit-%E5%8A%9E%E5%85%AC%E7%94%B5%E8%84%91%E7%9A%84%E6%A0%B8%E5%BF%83%EF%BC%89"><span class="toc-number">3.10.</span> <span class="toc-text">五、第四块：Linux 命令行基础（Bandit + 办公电脑的核心）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%B5%8F%E8%A7%88%E4%B8%8E%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="toc-number">3.10.1.</span> <span class="toc-text">5.1 浏览与读取文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6%E4%B8%8E%E5%86%85%E5%AE%B9"><span class="toc-number">3.10.2.</span> <span class="toc-text">5.2 查找文件与内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%EF%BC%88%E2%80%9C%E8%AF%BB%E4%B8%8D%E5%88%B0%E5%B0%B1%E7%94%A8%E5%88%AB%E7%9A%84%E5%B7%A5%E5%85%B7%E8%AF%BB%E2%80%9D%EF%BC%89"><span class="toc-number">3.10.3.</span> <span class="toc-text">5.3 文本处理（“读不到就用别的工具读”）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E6%9D%83%E9%99%90%E4%B8%8E%E8%BA%AB%E4%BB%BD%EF%BC%88%E5%8A%9E%E5%85%AC%E7%94%B5%E8%84%91%E9%82%A3%E9%A2%98%E7%9A%84%E5%85%B3%E9%94%AE%EF%BC%89"><span class="toc-number">3.10.4.</span> <span class="toc-text">5.4 权限与身份（办公电脑那题的关键）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E7%BD%91%E7%BB%9C%E3%80%81%E7%AE%A1%E9%81%93%E3%80%81%E9%80%9A%E9%85%8D%E7%AC%A6%E3%80%81%E5%8E%8B%E7%BC%A9"><span class="toc-number">3.10.5.</span> <span class="toc-text">5.5 网络、管道、通配符、压缩</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%AC%AC%E4%BA%94%E5%9D%97%EF%BC%9A%E5%8F%97%E9%99%90%E7%8E%AF%E5%A2%83%E4%B8%8E%E2%80%9C%E6%9B%B2%E7%BA%BF%E6%95%91%E5%9B%BD%E2%80%9D%E6%8A%80%E5%B7%A7%EF%BC%88%E5%8A%9E%E5%85%AC%E7%94%B5%E8%84%91%EF%BC%89"><span class="toc-number">3.11.</span> <span class="toc-text">六、第五块：受限环境与“曲线救国”技巧（办公电脑）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E7%AC%AC%E5%85%AD%E5%9D%97%EF%BC%9A%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E4%B8%8E%E5%B9%B3%E5%8F%B0"><span class="toc-number">3.12.</span> <span class="toc-text">七、第六块：常用工具与平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%91%BD%E4%BB%A4%E8%A1%8C%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97%EF%BC%88%E5%BC%95%E5%8F%B7-%C2%B7-%E7%A9%BA%E6%A0%BC-%C2%B7-%E6%96%9C%E6%9D%A0%EF%BC%89"><span class="toc-number">3.13.</span> <span class="toc-text">八、命令行避坑指南（引号 · 空格 · 斜杠）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1-%E9%93%81%E5%BE%8B%EF%BC%9A%E5%91%BD%E4%BB%A4%E4%B8%8E%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E5%BF%85%E9%A1%BB%E6%9C%89%E7%A9%BA%E6%A0%BC"><span class="toc-number">3.13.1.</span> <span class="toc-text">8.1 铁律：命令与参数之间必须有空格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-%E5%8F%82%E6%95%B0%E5%90%AB%E7%A9%BA%E6%A0%BC-%E6%8B%AC%E5%8F%B7-%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7%E6%97%B6%EF%BC%8C%E7%94%A8%E5%BC%95%E5%8F%B7%E5%8C%85%E8%B5%B7%E6%9D%A5"><span class="toc-number">3.13.2.</span> <span class="toc-text">8.2 参数含空格 &#x2F; 括号 &#x2F; 特殊符号时，用引号包起来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3-%E5%8D%95%E5%BC%95%E5%8F%B7-vs-%E5%8F%8C%E5%BC%95%E5%8F%B7"><span class="toc-number">3.13.3.</span> <span class="toc-text">8.3 单引号 vs 双引号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-%E6%96%9C%E6%9D%A0%E6%96%B9%E5%90%91%EF%BC%9ALinux-%E7%94%A8-%EF%BC%88%E6%AD%A3%E6%96%9C%E6%9D%A0%EF%BC%89%EF%BC%8C%E4%B8%8D%E6%98%AF"><span class="toc-number">3.13.4.</span> <span class="toc-text">8.4 斜杠方向：Linux 用 &#x2F;（正斜杠），不是 \</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5-%E7%9B%B8%E9%82%BB%E5%BC%95%E5%8F%B7%E4%BC%9A%E8%87%AA%E5%8A%A8%E5%90%88%E5%B9%B6"><span class="toc-number">3.13.5.</span> <span class="toc-text">8.5 相邻引号会自动合并</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-6-%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%80%BB%E7%BB%93"><span class="toc-number">3.13.6.</span> <span class="toc-text">8.6 一句话总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E7%AC%AC%E4%B8%83%E5%9D%97%EF%BC%9A%E9%80%9A%E7%94%A8%E8%A7%A3%E9%A2%98%E6%80%9D%E7%BB%B4%EF%BC%88%E6%AF%94%E5%91%BD%E4%BB%A4%E6%9B%B4%E9%87%8D%E8%A6%81%EF%BC%89"><span class="toc-number">3.14.</span> <span class="toc-text">九、第七块：通用解题思维（比命令更重要）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E9%99%84%E5%BD%95%EF%BC%9A%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2%E4%B8%80%E8%A7%88%EF%BC%88%E5%8F%AF%E7%9B%B4%E6%8E%A5%E5%A4%8D%E5%88%B6%EF%BC%89"><span class="toc-number">3.15.</span> <span class="toc-text">十、附录：编码转换一览（可直接复制）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5%EF%BC%88Linux-%E5%B8%B8%E7%94%A8%EF%BC%89"><span class="toc-number">3.15.1.</span> <span class="toc-text">命令速查（Linux 常用）</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" title="我的第一篇博客">我的第一篇博客</a><time datetime="2026-10-22T06:42:53.000Z" title="发表于 2026-10-22 14:42:53">2026-10-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/21/ctf-Web%E9%8F%82%E7%89%88%E5%A2%9C%E7%80%B9%E5%B1%BE%E6%9A%A3%E7%80%9B%EF%B8%BF%E7%AF%84%E7%91%99%E5%8B%AB%E5%9E%9D%E9%94%9B%E5%A0%A2%E7%B2%A8%E9%8D%9A%E5%A0%A2%E5%B9%87%E9%90%98%E8%AE%B9%E7%B4%9A/" title="Web 新手完整学习规划">Web 新手完整学习规划</a><time datetime="2026-10-20T23:16:07.000Z" title="发表于 2026-10-21 07:16:07">2026-10-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/20/ctf-SQL%E5%A8%89%E3%84%A5%E5%8F%86%E9%90%A7%E8%AF%B2%E7%B6%8D%E7%BC%81%E6%9B%A1%E7%B9%83%E6%A3%B0%E6%A8%BF%D0%92/" title="SQL 注入登录绕过题解">SQL 注入登录绕过题解</a><time datetime="2026-10-20T05:36:24.000Z" title="发表于 2026-10-20 13:36:24">2026-10-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/20/ctf-PHP%E9%97%86%E8%B7%BA%E7%86%80%E7%BA%AD%E2%82%AC%E9%96%AB%E7%86%B8%E5%9E%9A/" title="PHP 零基础速成（够做 Web 题）">PHP 零基础速成（够做 Web 题）</a><time datetime="2026-10-19T22:34:25.000Z" title="发表于 2026-10-20 06:34:25">2026-10-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/" title="PHP 文件包含题解 + CTF² 平台学习计划">PHP 文件包含题解 + CTF² 平台学习计划</a><time datetime="2026-10-19T21:50:16.000Z" title="发表于 2026-10-20 05:50:16">2026-10-20</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2026 By <a class="footer-bar-link" href="/" title="langkong1013" target="_blank">langkong1013</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">1</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://hexo.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/CTF/" style="font-size: 0.88rem;">CTF<sup>32</sup></a><a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 0.88rem;">Web安全<sup>32</sup></a><a href="/tags/%E5%A4%8D%E7%9B%98/" style="font-size: 0.88rem;">复盘<sup>32</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("04/01/2021 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2020 By 安知鱼 V1.7.0",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 langkong1013 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://cdn.cbd.int/qrcodejs@1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

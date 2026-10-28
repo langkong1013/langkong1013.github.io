@@ -1,0 +1,807 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>PHP 文件包含题解 + CTF² 平台学习计划 | 浪空</title><meta name="keywords" content="CTF,复盘,Web安全"><meta name="author" content="langkong1013"><meta name="copyright" content="langkong1013"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="PHP 文件包含题解 + CTF² 平台学习计划"><meta name="application-name" content="PHP 文件包含题解 + CTF² 平台学习计划"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="PHP 文件包含题解 + CTF² 平台学习计划"><meta property="og:url" content="http://langkong1013.github.io/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/index.html"><meta property="og:site_name" content="浪空"><meta property="og:description" content="零基础详解版 —— 从一道 LFI 题讲起，并把学习计划调整到 CTF² 平台 题目：source.php &amp;#x2F; hint.php 文件包含　|　flag：CTF2{0aaec924-feed-4b80-ba0d-2151603f9a25} 一、题目信息   项目 内容    题目地址 ht"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="http://langkong1013.github.io/img/furina-avatar.jpg"><meta property="article:author" content="langkong1013"><meta property="article:tag" content="CTF 学习笔记"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="http://langkong1013.github.io/img/furina-avatar.jpg"><meta name="description" content="零基础详解版 —— 从一道 LFI 题讲起，并把学习计划调整到 CTF² 平台 题目：source.php &amp;#x2F; hint.php 文件包含　|　flag：CTF2{0aaec924-feed-4b80-ba0d-2151603f9a25} 一、题目信息   项目 内容    题目地址 ht"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://langkong1013.github.io/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2024/07/27/125766904/ba62475f396df9de3316a08ed9e65d86_5680958632268053399..png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: undefined,
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: langkong1013","link":"链接: ","source":"来源: 浪空","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.2.0/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '浪空',
+  title: 'PHP 文件包含题解 + CTF² 平台学习计划',
+  postAI: '',
+  pageFillDescription: '一、题目信息, 二、解题过程（5 步）, 2.1 第一步：看页面源码, 2.2 第二步：访问 source.php 读源码, 2.3 第三步：访问 hint.php 拿目标文件名, 2.4 第四步：构造 payload, 2.5 第五步：拿到 flag, 三、源码逐行讲解, 四、payload 为什么能过校验, 五、文件包含题的通用套路, 六、易错点, 七、CTF² 是什么, 八、CTF² 做题流程（5 步）, 九、调整后的学习计划, 9.1 本周（10x2F20 周二 — 10x2F25 周日）, 9.2 下周（10x2F26 — 11x2F01）, 9.3 每日固定节奏, 十、CTF² 题目清单（按顺序搜）, 十一、复盘模板, 十二、本周验收清单零基础详解版从一道题讲起并把学习计划调整到平台题目文件包含一题目信息项目内容题目地址方向考点文件包含白名单校验绕过目录穿越关键提示源码注释说在最终一句话思路校验函数只看问号前面的但用的是整串于是用把校验骗过去再穿越目录读到目标文件二解题过程步第一步看页面源码打开题目页面只有一张图片按看源码发现一条注释这是出题人给的第一个提示去看注释在页面上不显示但源码里有这就是画面源码的典型例子第二步访问读源码在地址后面加题目地址核心代码简化版校验通过就包含这个文件第三步访问拿目标文件名题目地址返回意思是不在在这个文件里第四步构造直接传会被白名单拦下正确写法题目地址拆开看片段作用参数名源码里用接收让白名单校验通过的前缀目录穿越每段向上一级四段跳出根目录真正要读的文件第五步拿到页面返回复制这一整串提交即可注意本平台容器题的格式是不是三源码逐行讲解代码作用漏洞点把当前文件源码高亮输出方便做题人看代码白名单只允许思路是只放行两个文件整体完全相等才放行严格匹配直接传目标文件名会被拒找第一个问号的位置只关心问号之前的内容位置截取问号之前的字符串问号之后写什么都不检查解码后再判断一次防止用编码绕过包含并执行该文件用的是完整字符串不是截断后的整段代码的核心矛盾校验时把字符串在第一个问号处切断只看执行时拿到的是整串包括问号后面的目录穿越两者不一致就产生了绕过空间四为什么能过校验以为例走一遍流程先判断整体是否等于白名单不等于继续找第一个问号位置截取前面部分得到在白名单里校验通过返回收到完整字符串逐级向上跳出根目录最终定位到文件内容被包含并输出页面显示一句话校验看的是问号前执行用的是整串五文件包含题的通用套路类型特征典型本地文件包含参数进入白名单问号截断校验只看到问号前二次编码绕过过滤了读源码想读源码而不是执行执行代码开启写代码日志包含包含伪协议直接执行数据做题顺序建议先看源码找点看有没有过滤白名单选对应绕过方式六易错点坑说明直接传目标文件名不在白名单被拒漏掉问号不匹配白名单测试时被吃掉要加否则自动归一化路径目录层数不对本题层刚好太少跳不出根目录格式照抄本题是不是环境过期容器有时限过期重新开七是什么你做题的域名是说明你用的是平台项目内容平台名称新平台网址特点的升级版题目容器化每个题给一个独立域名主要栏目训练每日一练公开练习场赛事排行榜等题目板块公开练习场分为多个板块其中板块就是旧平台的经典题格式容器题多为老题可能是以题目页说明为准和你之前找的攻防世界相比攻防世界新版已经取消新手区题目打包成整届比赛题集的公开练习场更适合新手按板块刷八做题流程步打开注册并登录点顶部训练选公开练习场找到板块并报名在板块里按方向筛选等点开一道题点开启容器启动靶机等十几秒得到一个的地址浏览器打开该地址做题找到后回到题目页提交每日一练系统每天推一道精选题做完或到时间才解锁下一道适合保持手感注意事项容器有时限过期要重新开启之前拿到的地址会失效每道题的容器地址都不同别拿题的地址做题提交前确认格式和大小写别多带空格九调整后的学习计划本周周二周日日期主题具体任务产出周二今天文件包含入门已完成本题再补道同板块的源码泄露目录遍历题条复盘周三信息泄露四件套在板块搜源码泄露备份文件条复盘周四文件包含进阶再刷道练读源码条复盘周五注入入门联合查询报错注入理解引号闭合条复盘周六注入进阶综合布尔盲注时间盲注各道补做本周错题条复盘周日复盘日重做全部错题不查题解写字周复盘份周复盘本周目标累计条复盘能独立完成看源码找入口构造提交整个闭环下周日期主题具体任务周一入门反射型道理解输入未过滤直接输出周二进阶存储型道型道周三文件上传前端验证验证各道周四文件上传进阶后缀绕过内容绕过各道周五命令执行命令拼接空格过滤绕过各道周六综合训练每日一练补错题周日月度复盘整理本月条以上复盘定下月目标每日固定节奏分钟看原理教程源码题解分钟动手做题公开练习场分钟写复盘今天会了什么卡在哪十题目清单按顺序搜顺序题目关键词考点对应能力源码泄露看源码注释信息收集信息收集备份文件下载备份文件命名信息收集篡改身份认证目录遍历跳目录路径处理文件包含参数文件包含读源码伪协议注入基础引号闭合联合查询数据库找不到就在板块搜索框直接输关键词实在没有就换板块或换题不要在一道题上耗超过分钟十一复盘模板题目平台地址方向考点页面现象我的思路卡在哪正确做法为什么有效原理同类题规律十二本周验收清单能说出文件包含漏洞的本质参数可控能解释本题为什么要用而不是直接传文件名能独立写出读源码的平台能独立完成找题开容器做题提交本周复盘不少于条错题能不看题解重做一遍',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-10-28 16:50:16',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 8.1.2"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://npm.elemecdn.com/anzhiyu-blog-static@1.0.4/img/avatar.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">浪空</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/CTF/" style="font-size: 1.05rem;">CTF<sup>32</sup></a><a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 1.05rem;">Web安全<sup>32</sup></a><a href="/tags/%E5%A4%8D%E7%9B%98/" style="font-size: 1.05rem;">复盘<sup>32</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/10/"><span class="card-archive-list-date">十月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">9</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2026/09/"><span class="card-archive-list-date">九月 2026</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">24</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF-%E9%94%99%E9%A2%98%E5%A4%8D%E7%9B%98/" itemprop="url">CTF 错题复盘</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/CTF/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>CTF</span></a><a class="article-meta__tags" href="/tags/%E5%A4%8D%E7%9B%98/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>复盘</span></a><a class="article-meta__tags" href="/tags/Web%E5%AE%89%E5%85%A8/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>Web安全</span></a></span></div></div><h1 class="post-title" itemprop="name headline">PHP 文件包含题解 + CTF² 平台学习计划</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2026-10-19T21:50:16.000Z" title="发表于 2026-10-20 05:50:16">2026-10-20</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2026-10-28T08:50:16.185Z" title="更新于 2026-10-28 16:50:16">2026-10-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为长沙"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>长沙</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src=""></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://langkong1013.github.io/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/"><header><a class="post-meta-categories" href="/categories/CTF-%E9%94%99%E9%A2%98%E5%A4%8D%E7%9B%98/" itemprop="url">CTF 错题复盘</a><a href="/tags/CTF/" tabindex="-1" itemprop="url">CTF</a><a href="/tags/%E5%A4%8D%E7%9B%98/" tabindex="-1" itemprop="url">复盘</a><a href="/tags/Web%E5%AE%89%E5%85%A8/" tabindex="-1" itemprop="url">Web安全</a><h1 id="CrawlerTitle" itemprop="name headline">PHP 文件包含题解 + CTF² 平台学习计划</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">langkong1013</span><time itemprop="dateCreated datePublished" datetime="2026-10-19T21:50:16.000Z" title="发表于 2026-10-20 05:50:16">2026-10-20</time><time itemprop="dateCreated datePublished" datetime="2026-10-28T08:50:16.185Z" title="更新于 2026-10-28 16:50:16">2026-10-28</time></header><p>零基础详解版 —— 从一道 LFI 题讲起，并把学习计划调整到 CTF² 平台</p>
+<p>题目：source.php &#x2F; hint.php 文件包含　|　flag：CTF2{0aaec924-feed-4b80-ba0d-2151603f9a25}</p>
+<h2 id="一、题目信息"><a href="#一、题目信息" class="headerlink" title="一、题目信息"></a>一、题目信息</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>题目地址</td>
+<td><a target="_blank" rel="noopener" href="http://96aa0bc45a43f3ff3d55a028.http-ctf2.dasctf.com/">http://96aa0bc45a43f3ff3d55a028.http-ctf2.dasctf.com/</a></td>
+</tr>
+<tr>
+<td>方向</td>
+<td>Web</td>
+</tr>
+<tr>
+<td>考点</td>
+<td>PHP 文件包含（LFI）+ 白名单校验绕过 + 目录穿越</td>
+</tr>
+<tr>
+<td>关键提示</td>
+<td>源码注释 <!--source.php-->；hint.php 说 flag 在 ffffllllaaaagggg</td>
+</tr>
+<tr>
+<td>最终 flag</td>
+<td>CTF2{0aaec924-feed-4b80-ba0d-2151603f9a25}</td>
+</tr>
+<tr>
+<td>一句话思路</td>
+<td>校验函数只看问号前面的 source.php，但 include 用的是整串，于是用 source.php?&#x2F;..&#x2F;..&#x2F;.. 把校验骗过去，再穿越目录读到目标文件。</td>
+</tr>
+</tbody></table>
+<span id="more"></span>
+
+<h2 id="二、解题过程（5-步）"><a href="#二、解题过程（5-步）" class="headerlink" title="二、解题过程（5 步）"></a>二、解题过程（5 步）</h2><h3 id="2-1-第一步：看页面源码"><a href="#2-1-第一步：看页面源码" class="headerlink" title="2.1 第一步：看页面源码"></a>2.1 第一步：看页面源码</h3><p>打开题目，页面只有一张图片。按 Ctrl+U 看源码，发现一条 HTML 注释：</p>
+<!--source.php-->
+
+<p>这是出题人给的第一个提示：去看 source.php。HTML 注释在页面上不显示，但源码里有——这就是”画面 ≠ 源码”的典型例子。</p>
+<h3 id="2-2-第二步：访问-source-php-读源码"><a href="#2-2-第二步：访问-source-php-读源码" class="headerlink" title="2.2 第二步：访问 source.php 读源码"></a>2.2 第二步：访问 source.php 读源码</h3><p>在地址后面加 &#x2F;source.php：</p>
+<p>http:&#x2F;&#x2F;题目地址&#x2F;source.php</p>
+<p>核心代码（简化版）：</p>
+<?php
+highlight_file(__FILE__);          // 高亮显示本文件源码
+
+class emmm {
+    public static function checkFile(&$page) {
+        $whitelist = ["source"=>"source.php", "hint"=>"hint.php"];
+        if (!isset($page) || !is_string($page)) {
+            echo "you can't see it";
+            return false;
+        }
+        if (in_array($page, $whitelist)) {
+            return true;
+        }
+        $_page = mb_substr($page, 0, mb_strpos($page . '?', '?'));
+        if (in_array($_page, $whitelist)) {
+            return true;
+        }
+        $_page = urldecode($page);
+        $_page = mb_substr($_page, 0, mb_strpos($_page . '?', '?'));
+        if (in_array($_page, $whitelist)) {
+            return true;
+        }
+        return false;
+    }
+}
+
+if (!empty($_REQUEST['file']) && is_string($_REQUEST['file'])
+    && emmm::checkFile($_REQUEST["file"])) {
+    include $_REQUEST["file"];      // 校验通过就包含这个文件
+    exit;
+} else {
+    echo "<br><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src=... />";
+}
+?>
+
+<h3 id="2-3-第三步：访问-hint-php-拿目标文件名"><a href="#2-3-第三步：访问-hint-php-拿目标文件名" class="headerlink" title="2.3 第三步：访问 hint.php 拿目标文件名"></a>2.3 第三步：访问 hint.php 拿目标文件名</h3><p>http:&#x2F;&#x2F;题目地址&#x2F;hint.php</p>
+<p>返回：</p>
+<p>flag not here, and flag in ffffllllaaaagggg</p>
+<p>意思是：flag 不在 hint.php，在 ffffllllaaaagggg 这个文件里。</p>
+<h3 id="2-4-第四步：构造-payload"><a href="#2-4-第四步：构造-payload" class="headerlink" title="2.4 第四步：构造 payload"></a>2.4 第四步：构造 payload</h3><p>直接传 file&#x3D;ffffllllaaaagggg 会被白名单拦下。正确写法：</p>
+<p>http:&#x2F;&#x2F;题目地址&#x2F;?file&#x3D;source.php?&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;ffffllllaaaagggg</p>
+<p>拆开看：</p>
+<table>
+<thead>
+<tr>
+<th>片段</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>?file&#x3D;</td>
+<td>参数名，源码里用 $_REQUEST[“file”] 接收</td>
+</tr>
+<tr>
+<td>source.php?</td>
+<td>让白名单校验通过的前缀</td>
+</tr>
+<tr>
+<td>&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;</td>
+<td>目录穿越：每段 ..&#x2F; 向上一级，四段跳出 web 根目录</td>
+</tr>
+<tr>
+<td>ffffllllaaaagggg</td>
+<td>真正要读的文件</td>
+</tr>
+</tbody></table>
+<h3 id="2-5-第五步：拿到-flag"><a href="#2-5-第五步：拿到-flag" class="headerlink" title="2.5 第五步：拿到 flag"></a>2.5 第五步：拿到 flag</h3><p>页面返回：</p>
+<p>CTF2{0aaec924-feed-4b80-ba0d-2151603f9a25}</p>
+<p>复制这一整串提交即可。注意：本平台容器题的 flag 格式是 CTF2{…}，不是 flag{…}。</p>
+<h2 id="三、源码逐行讲解"><a href="#三、源码逐行讲解" class="headerlink" title="三、源码逐行讲解"></a>三、源码逐行讲解</h2><table>
+<thead>
+<tr>
+<th>代码</th>
+<th>作用</th>
+<th>漏洞点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>highlight_file(<strong>FILE</strong>)</td>
+<td>把当前文件源码高亮输出</td>
+<td>方便做题人看代码</td>
+</tr>
+<tr>
+<td>$whitelist &#x3D; […]</td>
+<td>白名单只允许 source.php、hint.php</td>
+<td>思路是”只放行两个文件”</td>
+</tr>
+<tr>
+<td>in_array($page, $whitelist)</td>
+<td>整体完全相等才放行</td>
+<td>严格匹配，直接传目标文件名会被拒</td>
+</tr>
+<tr>
+<td>mb_strpos($page . “?”, “?”)</td>
+<td>找第一个问号的位置</td>
+<td>只关心问号之前的内容</td>
+</tr>
+<tr>
+<td>mb_substr($page, 0, 位置)</td>
+<td>截取问号之前的字符串</td>
+<td>问号之后写什么都不检查</td>
+</tr>
+<tr>
+<td>urldecode($page)</td>
+<td>URL 解码后再判断一次</td>
+<td>防止用编码绕过</td>
+</tr>
+<tr>
+<td>include $_REQUEST[“file”]</td>
+<td>包含并执行该文件</td>
+<td>用的是完整字符串，不是截断后的</td>
+</tr>
+</tbody></table>
+<p>整段代码的核心矛盾：</p>
+<ul>
+<li>校验时：把字符串在第一个问号处”切断”，只看 source.php。</li>
+<li>执行时：include 拿到的是”整串”，包括问号后面的目录穿越。</li>
+<li>两者不一致，就产生了绕过空间。</li>
+</ul>
+<h2 id="四、payload-为什么能过校验"><a href="#四、payload-为什么能过校验" class="headerlink" title="四、payload 为什么能过校验"></a>四、payload 为什么能过校验</h2><p>以 file&#x3D;source.php?&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;ffffllllaaaagggg 为例，走一遍流程：</p>
+<ol>
+<li>先判断整体是否等于白名单：不等于，继续。</li>
+<li>找第一个问号位置，截取前面部分，得到 source.php。</li>
+<li>source.php 在白名单里 → 校验通过，返回 true。</li>
+<li>include 收到完整字符串 source.php?&#x2F;..&#x2F;..&#x2F;..&#x2F;..&#x2F;ffffllllaaaagggg。</li>
+<li>..&#x2F; 逐级向上，跳出 web 根目录，最终定位到 ffffllllaaaagggg。</li>
+<li>文件内容被包含并输出 → 页面显示 flag。</li>
+</ol>
+<p>一句话：校验看的是”问号前”，执行用的是”整串”。</p>
+<h2 id="五、文件包含题的通用套路"><a href="#五、文件包含题的通用套路" class="headerlink" title="五、文件包含题的通用套路"></a>五、文件包含题的通用套路</h2><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>特征</th>
+<th>典型 payload</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本地文件包含</td>
+<td>参数进入 include</td>
+<td>?file&#x3D;..&#x2F;..&#x2F;etc&#x2F;passwd</td>
+</tr>
+<tr>
+<td>白名单 + 问号截断</td>
+<td>校验只看到问号前</td>
+<td>?file&#x3D;source.php?&#x2F;..&#x2F;..&#x2F;flag</td>
+</tr>
+<tr>
+<td>二次编码绕过</td>
+<td>过滤了 ..&#x2F;</td>
+<td>?file&#x3D;%252e%252e%252f</td>
+</tr>
+<tr>
+<td>php:&#x2F;&#x2F;filter 读源码</td>
+<td>想读 PHP 源码而不是执行</td>
+<td>?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;index.php</td>
+</tr>
+<tr>
+<td>php:&#x2F;&#x2F;input 执行代码</td>
+<td>allow_url_include 开启</td>
+<td>POST body 写 PHP 代码</td>
+</tr>
+<tr>
+<td>日志包含</td>
+<td>包含 access.log</td>
+<td>?file&#x3D;..&#x2F;..&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log</td>
+</tr>
+<tr>
+<td>伪协议 data:&#x2F;&#x2F;</td>
+<td>直接执行数据</td>
+<td>?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain;base64,PD9waHA…</td>
+</tr>
+</tbody></table>
+<p>做题顺序建议：先看源码 → 找 include 点 → 看有没有过滤&#x2F;白名单 → 选对应绕过方式。</p>
+<h2 id="六、易错点"><a href="#六、易错点" class="headerlink" title="六、易错点"></a>六、易错点</h2><table>
+<thead>
+<tr>
+<th>坑</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>直接传目标文件名</td>
+<td>不在白名单，被拒</td>
+</tr>
+<tr>
+<td>漏掉问号</td>
+<td>source.php&#x2F;..&#x2F;.. 不匹配白名单</td>
+</tr>
+<tr>
+<td>curl 测试时 ..&#x2F; 被吃掉</td>
+<td>要加 –path-as-is，否则 curl 自动归一化路径</td>
+</tr>
+<tr>
+<td>目录层数不对</td>
+<td>本题 4 层刚好；太少跳不出根目录</td>
+</tr>
+<tr>
+<td>flag 格式照抄</td>
+<td>本题是 CTF2{…}，不是 flag{…}</td>
+</tr>
+<tr>
+<td>环境过期</td>
+<td>容器有时限，过期重新开</td>
+</tr>
+</tbody></table>
+<h2 id="七、CTF²-是什么"><a href="#七、CTF²-是什么" class="headerlink" title="七、CTF² 是什么"></a>七、CTF² 是什么</h2><p>你做题的域名是 xxx.http-ctf2.dasctf.com，说明你用的是 CTF² 平台。</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>平台名称</td>
+<td>CTF²（BUUCTF 新平台）</td>
+</tr>
+<tr>
+<td>网址</td>
+<td><a target="_blank" rel="noopener" href="https://ctf2.dasctf.com/">https://ctf2.dasctf.com</a></td>
+</tr>
+<tr>
+<td>特点</td>
+<td>BUUCTF 的升级版，题目容器化，每个题给一个独立域名</td>
+</tr>
+<tr>
+<td>主要栏目</td>
+<td>训练（每日一练 + 公开练习场）、赛事、排行榜等</td>
+</tr>
+<tr>
+<td>题目板块</td>
+<td>公开练习场分为多个板块，其中 BUUCTF 板块就是旧平台的经典题</td>
+</tr>
+<tr>
+<td>flag 格式</td>
+<td>容器题多为 CTF2{uuid}；老题可能是 flag{…}，以题目页说明为准</td>
+</tr>
+</tbody></table>
+<p>和你之前找的攻防世界相比：攻防世界新版已经取消”新手区”，题目打包成整届比赛题集；CTF² 的公开练习场更适合新手按板块刷。</p>
+<h2 id="八、CTF²-做题流程（5-步）"><a href="#八、CTF²-做题流程（5-步）" class="headerlink" title="八、CTF² 做题流程（5 步）"></a>八、CTF² 做题流程（5 步）</h2><ol>
+<li>打开 <a target="_blank" rel="noopener" href="https://ctf2.dasctf.com,注册并登录./">https://ctf2.dasctf.com，注册并登录。</a></li>
+<li>点顶部「训练」→ 选「公开练习场」→ 找到 BUUCTF 板块并报名。</li>
+<li>在板块里按方向筛选（Web &#x2F; Misc 等），点开一道题。</li>
+<li>点「开启容器 &#x2F; 启动靶机」，等十几秒，得到一个 xxx.http-ctf2.dasctf.com 的地址。</li>
+<li>浏览器打开该地址做题，找到 flag 后回到题目页提交。</li>
+</ol>
+<p>每日一练：系统每天推一道精选题，做完或到时间才解锁下一道，适合保持手感。</p>
+<p>注意事项：</p>
+<ul>
+<li>容器有时限，过期要重新开启，之前拿到的地址会失效。</li>
+<li>每道题的容器地址都不同，别拿 A 题的地址做 B 题。</li>
+<li>提交前确认 flag 格式和大小写，别多带空格。</li>
+</ul>
+<h2 id="九、调整后的学习计划"><a href="#九、调整后的学习计划" class="headerlink" title="九、调整后的学习计划"></a>九、调整后的学习计划</h2><h3 id="9-1-本周（10-20-周二-—-10-25-周日）"><a href="#9-1-本周（10-20-周二-—-10-25-周日）" class="headerlink" title="9.1 本周（10&#x2F;20 周二 — 10&#x2F;25 周日）"></a>9.1 本周（10&#x2F;20 周二 — 10&#x2F;25 周日）</h3><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>主题</th>
+<th>具体任务</th>
+<th>产出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>周二 10&#x2F;20（今天）</td>
+<td>文件包含入门</td>
+<td>已完成本题；再补 1 道同板块的源码泄露&#x2F;目录遍历题</td>
+<td>2 条复盘</td>
+</tr>
+<tr>
+<td>周三 10&#x2F;21</td>
+<td>信息泄露四件套</td>
+<td>在 BUUCTF 板块搜：源码泄露、备份文件、robots、Cookie</td>
+<td>4 条复盘</td>
+</tr>
+<tr>
+<td>周四 10&#x2F;22</td>
+<td>文件包含进阶</td>
+<td>再刷 2 道 LFI，练 php:&#x2F;&#x2F;filter 读源码</td>
+<td>2 条复盘</td>
+</tr>
+<tr>
+<td>周五 10&#x2F;23</td>
+<td>SQL 注入入门</td>
+<td>联合查询 + 报错注入，理解引号闭合</td>
+<td>2 条复盘</td>
+</tr>
+<tr>
+<td>周六 10&#x2F;24</td>
+<td>SQL 注入进阶 + 综合</td>
+<td>布尔盲注&#x2F;时间盲注各 1 道；补做本周错题</td>
+<td>3 条复盘</td>
+</tr>
+<tr>
+<td>周日 10&#x2F;25</td>
+<td>复盘日</td>
+<td>重做全部错题（不查题解）；写 300 字周复盘</td>
+<td>1 份周复盘</td>
+</tr>
+</tbody></table>
+<p>本周目标：累计 13 条复盘，能独立完成”看源码 → 找入口 → 构造 payload → 提交”整个闭环。</p>
+<h3 id="9-2-下周（10-26-—-11-01）"><a href="#9-2-下周（10-26-—-11-01）" class="headerlink" title="9.2 下周（10&#x2F;26 — 11&#x2F;01）"></a>9.2 下周（10&#x2F;26 — 11&#x2F;01）</h3><table>
+<thead>
+<tr>
+<th>日期</th>
+<th>主题</th>
+<th>具体任务</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>周一 10&#x2F;26</td>
+<td>XSS 入门</td>
+<td>反射型 2 道，理解”输入未过滤直接输出”</td>
+</tr>
+<tr>
+<td>周二 10&#x2F;27</td>
+<td>XSS 进阶</td>
+<td>存储型 1 道 + DOM 型 1 道</td>
+</tr>
+<tr>
+<td>周三 10&#x2F;28</td>
+<td>文件上传</td>
+<td>前端验证、MIME 验证各 1 道</td>
+</tr>
+<tr>
+<td>周四 10&#x2F;29</td>
+<td>文件上传进阶</td>
+<td>后缀绕过、内容绕过各 1 道</td>
+</tr>
+<tr>
+<td>周五 10&#x2F;30</td>
+<td>命令执行</td>
+<td>命令拼接、空格过滤绕过各 1 道</td>
+</tr>
+<tr>
+<td>周六 10&#x2F;31</td>
+<td>综合训练</td>
+<td>CTF² 每日一练 + 补错题</td>
+</tr>
+<tr>
+<td>周日 11&#x2F;01</td>
+<td>月度复盘</td>
+<td>整理本月 25 条以上复盘；定下月目标</td>
+</tr>
+</tbody></table>
+<h3 id="9-3-每日固定节奏"><a href="#9-3-每日固定节奏" class="headerlink" title="9.3 每日固定节奏"></a>9.3 每日固定节奏</h3><p>40 分钟：看原理（教程 &#x2F; 源码 &#x2F; 题解）<br>50 分钟：动手做题（CTF² 公开练习场）<br>10 分钟：写复盘（今天会了什么、卡在哪）</p>
+<h2 id="十、CTF²-题目清单（按顺序搜）"><a href="#十、CTF²-题目清单（按顺序搜）" class="headerlink" title="十、CTF² 题目清单（按顺序搜）"></a>十、CTF² 题目清单（按顺序搜）</h2><table>
+<thead>
+<tr>
+<th>顺序</th>
+<th>题目 &#x2F; 关键词</th>
+<th>考点</th>
+<th>对应能力</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>源码泄露 &#x2F; view_source</td>
+<td>看源码、注释</td>
+<td>信息收集</td>
+</tr>
+<tr>
+<td>2</td>
+<td>robots</td>
+<td>robots.txt</td>
+<td>信息收集</td>
+</tr>
+<tr>
+<td>3</td>
+<td>备份文件下载 &#x2F; backup</td>
+<td>备份文件命名</td>
+<td>信息收集</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Cookie</td>
+<td>Cookie 篡改</td>
+<td>身份认证</td>
+</tr>
+<tr>
+<td>5</td>
+<td>目录遍历</td>
+<td>..&#x2F; 跳目录</td>
+<td>路径处理</td>
+</tr>
+<tr>
+<td>6</td>
+<td>文件包含 &#x2F; LFI</td>
+<td>include 参数</td>
+<td>文件包含</td>
+</tr>
+<tr>
+<td>7</td>
+<td>php:&#x2F;&#x2F;filter</td>
+<td>读 PHP 源码</td>
+<td>伪协议</td>
+</tr>
+<tr>
+<td>8</td>
+<td>SQL 注入基础</td>
+<td>引号闭合、联合查询</td>
+<td>数据库</td>
+</tr>
+</tbody></table>
+<p>找不到就在板块搜索框直接输关键词；实在没有就换板块或换题，不要在一道题上耗超过 40 分钟。</p>
+<h2 id="十一、复盘模板"><a href="#十一、复盘模板" class="headerlink" title="十一、复盘模板"></a>十一、复盘模板</h2><p>题目：<br>平台 &#x2F; 地址：<br>方向 &#x2F; 考点：<br>页面现象：<br>我的思路：<br>卡在哪：<br>正确做法（payload）：<br>为什么有效（原理）：<br>同类题规律：</p>
+<h2 id="十二、本周验收清单"><a href="#十二、本周验收清单" class="headerlink" title="十二、本周验收清单"></a>十二、本周验收清单</h2><ul>
+<li>能说出文件包含漏洞的本质：参数可控 + include。</li>
+<li>能解释本题为什么要用 source.php?&#x2F;..&#x2F;.. 而不是直接传文件名。</li>
+<li>能独立写出 php:&#x2F;&#x2F;filter 读源码的 payload。</li>
+<li>CTF² 平台能独立完成：找题 → 开容器 → 做题 → 提交。</li>
+<li>本周复盘不少于 13 条。</li>
+<li>错题能不看题解重做一遍。</li>
+</ul>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/furina-avatar.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/furina-avatar.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">langkong1013</div><div class="post-copyright__author_desc">记录学习与踩坑</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://langkong1013.github.io/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://langkong1013.github.io/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/')">PHP 文件包含题解 + CTF² 平台学习计划</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://langkong1013.github.io/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=PHP 文件包含题解 + CTF² 平台学习计划&amp;url=http://langkong1013.github.io/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/&amp;pic=" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://langkong1013.github.io" target="_blank">浪空</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/CTF/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>CTF<span class="tagsPageCount">32</span></a><a class="post-meta__box__tags" href="/tags/%E5%A4%8D%E7%9B%98/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>复盘<span class="tagsPageCount">32</span></a><a class="post-meta__box__tags" href="/tags/Web%E5%AE%89%E5%85%A8/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>Web安全<span class="tagsPageCount">32</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="/img/furina-avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2026/10/20/ctf-GitHub%E9%8E%BB%E6%80%ADR%E7%80%B9%E5%B1%BE%E6%9A%A3%E7%80%B9%E7%82%B4%E6%90%B7%E9%8E%B5%E5%AC%AA%E5%94%BD/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">GitHub 提 PR 完整实操手册</div></div></a></div><div class="next-post pull-right"><a href="/2026/10/20/ctf-PHP%E9%97%86%E8%B7%BA%E7%86%80%E7%BA%AD%E2%82%AC%E9%96%AB%E7%86%B8%E5%9E%9A/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">PHP 零基础速成（够做 Web 题）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/2026/09/23/ctf-CTF%E9%8D%8F%E3%83%A9%E6%A3%AC%E9%90%AD%E3%83%A8%E7%98%91%E5%A8%93%E5%91%AD%E5%B4%9F/" title="CTF 入门知识清单（零基础详解版）"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-09-23</div><div class="title">CTF 入门知识清单（零基础详解版）</div></div></a></div><div><a href="/2026/09/22/ctf-ASCII%E9%90%AE%E4%BD%B8%E7%95%AC%E9%8F%81%E6%9D%91%EE%98%B2%E9%90%A9%E6%A8%B9%E7%AC%8C%E9%8E%BF%E5%B6%84%E7%B6%94%E9%8E%B5%E5%AC%AA%E5%94%BD/" title="【基础】ASCII 码"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-09-22</div><div class="title">【基础】ASCII 码</div></div></a></div><div><a href="/2026/10/13/ctf-2026%E7%BB%80%E6%83%A7%E6%B4%9F%E9%8E%B7%E6%B6%99%E6%9F%8A%E7%92%A7%E6%B6%A2%EE%95%BD%E7%91%99%EF%BC%A2%E9%94%8B%E6%9F%8A%E9%8E%B5%E5%AC%AD%EE%87%9B%E7%91%99%EF%BD%87%E5%A2%97/" title="2026 社团招新赛题解 · 新手详解版"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-13</div><div class="title">2026 社团招新赛题解 · 新手详解版</div></div></a></div><div><a href="/2026/10/20/ctf-SQL%E5%A8%89%E3%84%A5%E5%8F%86%E9%90%A7%E8%AF%B2%E7%B6%8D%E7%BC%81%E6%9B%A1%E7%B9%83%E6%A3%B0%E6%A8%BF%D0%92/" title="SQL 注入登录绕过题解"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-20</div><div class="title">SQL 注入登录绕过题解</div></div></a></div><div><a href="/2026/10/20/ctf-GitHub%E9%8E%BB%E6%80%ADR%E7%80%B9%E5%B1%BE%E6%9A%A3%E7%80%B9%E7%82%B4%E6%90%B7%E9%8E%B5%E5%AC%AA%E5%94%BD/" title="GitHub 提 PR 完整实操手册"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-10-20</div><div class="title">GitHub 提 PR 完整实操手册</div></div></a></div><div><a href="/2026/09/21/ctf-Bandit1-15%E9%8D%8F%E7%9F%BBinux%E9%8D%A9%E8%99%B9%EE%94%85%E9%8E%BF%E5%B6%84%E7%B6%94%E7%92%87%EF%B9%81%D0%92/" title="Bandit 1–15 关 Linux 基础操作详解"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2026-09-21</div><div class="title">Bandit 1–15 关 Linux 基础操作详解</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/furina-avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">网安</div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://bu.dusays.com/2023/05/13/645fa415e8694.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%A2%98%E7%9B%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">1.</span> <span class="toc-text">一、题目信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%A7%A3%E9%A2%98%E8%BF%87%E7%A8%8B%EF%BC%885-%E6%AD%A5%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">二、解题过程（5 步）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%9C%8B%E9%A1%B5%E9%9D%A2%E6%BA%90%E7%A0%81"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 第一步：看页面源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E8%AE%BF%E9%97%AE-source-php-%E8%AF%BB%E6%BA%90%E7%A0%81"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 第二步：访问 source.php 读源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E8%AE%BF%E9%97%AE-hint-php-%E6%8B%BF%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6%E5%90%8D"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 第三步：访问 hint.php 拿目标文件名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E7%AC%AC%E5%9B%9B%E6%AD%A5%EF%BC%9A%E6%9E%84%E9%80%A0-payload"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 第四步：构造 payload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E7%AC%AC%E4%BA%94%E6%AD%A5%EF%BC%9A%E6%8B%BF%E5%88%B0-flag"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 第五步：拿到 flag</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%BA%90%E7%A0%81%E9%80%90%E8%A1%8C%E8%AE%B2%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">三、源码逐行讲解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81payload-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%83%BD%E8%BF%87%E6%A0%A1%E9%AA%8C"><span class="toc-number">4.</span> <span class="toc-text">四、payload 为什么能过校验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E9%A2%98%E7%9A%84%E9%80%9A%E7%94%A8%E5%A5%97%E8%B7%AF"><span class="toc-number">5.</span> <span class="toc-text">五、文件包含题的通用套路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%98%93%E9%94%99%E7%82%B9"><span class="toc-number">6.</span> <span class="toc-text">六、易错点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81CTF%C2%B2-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">7.</span> <span class="toc-text">七、CTF² 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81CTF%C2%B2-%E5%81%9A%E9%A2%98%E6%B5%81%E7%A8%8B%EF%BC%885-%E6%AD%A5%EF%BC%89"><span class="toc-number">8.</span> <span class="toc-text">八、CTF² 做题流程（5 步）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E8%B0%83%E6%95%B4%E5%90%8E%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92"><span class="toc-number">9.</span> <span class="toc-text">九、调整后的学习计划</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1-%E6%9C%AC%E5%91%A8%EF%BC%8810-20-%E5%91%A8%E4%BA%8C-%E2%80%94-10-25-%E5%91%A8%E6%97%A5%EF%BC%89"><span class="toc-number">9.1.</span> <span class="toc-text">9.1 本周（10&#x2F;20 周二 — 10&#x2F;25 周日）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2-%E4%B8%8B%E5%91%A8%EF%BC%8810-26-%E2%80%94-11-01%EF%BC%89"><span class="toc-number">9.2.</span> <span class="toc-text">9.2 下周（10&#x2F;26 — 11&#x2F;01）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-3-%E6%AF%8F%E6%97%A5%E5%9B%BA%E5%AE%9A%E8%8A%82%E5%A5%8F"><span class="toc-number">9.3.</span> <span class="toc-text">9.3 每日固定节奏</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81CTF%C2%B2-%E9%A2%98%E7%9B%AE%E6%B8%85%E5%8D%95%EF%BC%88%E6%8C%89%E9%A1%BA%E5%BA%8F%E6%90%9C%EF%BC%89"><span class="toc-number">10.</span> <span class="toc-text">十、CTF² 题目清单（按顺序搜）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E5%A4%8D%E7%9B%98%E6%A8%A1%E6%9D%BF"><span class="toc-number">11.</span> <span class="toc-text">十一、复盘模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%BA%8C%E3%80%81%E6%9C%AC%E5%91%A8%E9%AA%8C%E6%94%B6%E6%B8%85%E5%8D%95"><span class="toc-number">12.</span> <span class="toc-text">十二、本周验收清单</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" title="我的第一篇博客">我的第一篇博客</a><time datetime="2026-10-22T06:42:53.000Z" title="发表于 2026-10-22 14:42:53">2026-10-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/21/ctf-Web%E9%8F%82%E7%89%88%E5%A2%9C%E7%80%B9%E5%B1%BE%E6%9A%A3%E7%80%9B%EF%B8%BF%E7%AF%84%E7%91%99%E5%8B%AB%E5%9E%9D%E9%94%9B%E5%A0%A2%E7%B2%A8%E9%8D%9A%E5%A0%A2%E5%B9%87%E9%90%98%E8%AE%B9%E7%B4%9A/" title="Web 新手完整学习规划">Web 新手完整学习规划</a><time datetime="2026-10-20T23:16:07.000Z" title="发表于 2026-10-21 07:16:07">2026-10-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/20/ctf-SQL%E5%A8%89%E3%84%A5%E5%8F%86%E9%90%A7%E8%AF%B2%E7%B6%8D%E7%BC%81%E6%9B%A1%E7%B9%83%E6%A3%B0%E6%A8%BF%D0%92/" title="SQL 注入登录绕过题解">SQL 注入登录绕过题解</a><time datetime="2026-10-20T05:36:24.000Z" title="发表于 2026-10-20 13:36:24">2026-10-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/20/ctf-PHP%E9%97%86%E8%B7%BA%E7%86%80%E7%BA%AD%E2%82%AC%E9%96%AB%E7%86%B8%E5%9E%9A/" title="PHP 零基础速成（够做 Web 题）">PHP 零基础速成（够做 Web 题）</a><time datetime="2026-10-19T22:34:25.000Z" title="发表于 2026-10-20 06:34:25">2026-10-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/10/20/ctf-PHP%E9%8F%82%E5%9B%A6%E6%AC%A2%E9%8D%96%E5%91%AD%E6%83%88%E6%A3%B0%E6%A8%BF%D0%92%E6%B6%93%E5%B6%A4TF2%E7%80%9B%EF%B8%BF%E7%AF%84%E7%92%81%E2%80%B3%E5%9E%9D/" title="PHP 文件包含题解 + CTF² 平台学习计划">PHP 文件包含题解 + CTF² 平台学习计划</a><time datetime="2026-10-19T21:50:16.000Z" title="发表于 2026-10-20 05:50:16">2026-10-20</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2026 By <a class="footer-bar-link" href="/" title="langkong1013" target="_blank">langkong1013</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">1</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://hexo.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/CTF/" style="font-size: 0.88rem;">CTF<sup>32</sup></a><a href="/tags/Web%E5%AE%89%E5%85%A8/" style="font-size: 0.88rem;">Web安全<sup>32</sup></a><a href="/tags/%E5%A4%8D%E7%9B%98/" style="font-size: 0.88rem;">复盘<sup>32</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@6.1.6/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("04/01/2021 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2020 By 安知鱼 V1.7.0",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 langkong1013 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://cdn.cbd.int/qrcodejs@1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
